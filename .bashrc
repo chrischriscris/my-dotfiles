@@ -80,6 +80,8 @@ fi
 
 # ==== Custom path additions ====
 
+export $(envsubst < ~/.env)
+
 export ANDROID_HOME="$HOME/Android/Sdk"
 append_path "$HOME/.local/bin" # pipx executables
 append_path "$HOME/bin" # Custom scripts
