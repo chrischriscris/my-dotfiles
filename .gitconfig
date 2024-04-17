@@ -1,0 +1,8 @@
+[user]
+	email = 18-10892@usb.ve
+	name = Christopher Gómez
+
+[init]
+    defaultBranch = main
+[safe]
+	directory = /opt/flutter
