@@ -1,0 +1,24 @@
+#!/bin/bash
+
+# Check if the ffmpeg command is available
+if ! command -v ffmpeg >/dev/null; then
+  echo "ffmpeg command not found"
+  exit 1
+fi
+
+# Get the input and output video files
+input_video=$1
+output_video=$2
+
+# Compress the video
+ffmpeg -i "$input_video" -vcodec libx265 -crf 34 "$output_video"
+
+# Check if the output video file was created successfully
+if [ ! -f "$output_video" ]; then
+  echo "Output video file not created"
+  exit 1
+fi
+
+# Print a success message
+echo "Video compressed successfully"
+

@@ -1,0 +1,50 @@
+#!/bin/bash
+
+# Trim an audio file.
+
+# Get the input file name.
+input_file_name=$1
+
+# Get the start time of the trim.
+start_time=$2
+
+# Get the end time of the trim.
+end_time=$3
+
+# Check if the input file exists.
+if [ ! -f "$input_file_name" ]; then
+  echo "Error: Input file '$input_file_name' does not exist."
+  exit 1
+fi
+
+# Check if the start time is valid.
+if [ "$start_time" -lt 0 ]; then
+  echo "Error: Start time must be non-negative."
+  exit 1
+fi
+
+# Check if the end time is valid.
+if [ "$end_time" -lt 0 ]; then
+  echo "Error: End time must be non-negative."
+  exit 1
+fi
+
+# Check if the start time is before the end time.
+if [ "$start_time" -gt "$end_time" ]; then
+  echo "Error: Start time must be before end time."
+  exit 1
+fi
+
+# Get the output file name.
+if [ -z "$4" ]; then
+  output_file_name="trimmed.mp4"
+else
+  output_file_name=$4
+fi
+
+# Trim the audio file.
+ffmpeg -ss "$start_time" -to "$end_time" -i "$input_file_name" -c copy "$output_file_name"
+
+# Success!
+echo "Audio successfully trimmed to '$output_file_name'."
+

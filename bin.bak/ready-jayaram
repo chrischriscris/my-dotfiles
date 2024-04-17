@@ -1,0 +1,20 @@
+#!/bin/bash
+
+# Redirect all output to dev/null and disown the process
+
+# Opens Edge (with Slack, Jira, dev server and GitHub) and IDEA
+nohup microsoft-edge-stable \
+    https://app.slack.com/client/T0PLLU9PS/C05KHUVU5T4 \
+    http://localhost:5173/ \
+    https://jayaramlaw.atlassian.net/jira/software/projects/JQ/boards/3 \
+    https://miro.com/app/board/uXjVNw6nNOQ=/ \
+    https://github.com/Jayaram-Law/jayaram-web >/dev/null 2>&1 &
+nohup intellij-idea-ultimate-edition /home/chus/jayaram/ >/dev/null 2>&1 &
+
+# Opens working directory and creates a new tmux session
+cd /home/chus/jayaram/
+tmux new-session -d -s jayaram -n dev
+tmux send-keys -t jayaram:dev './start-frontend.sh' Enter
+tmux split-window -v -t jayaram:dev
+tmux send-keys -t jayaram:dev 'docker-compose up -d' Enter
+tmux a

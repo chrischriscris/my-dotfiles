@@ -1,0 +1,22 @@
+#!/bin/bash
+
+# Check if the input pdfs exist
+for input in "$@"; do
+  if [ ! -f "$input" ]; then
+    echo "Error: Input PDF '$input' does not exist."
+    exit 1
+  fi
+done
+
+# Check if pdfunite is installed
+if [ ! -f /usr/bin/pdfunite ]; then
+  echo "Error: pdfunite is not installed."
+  exit 1
+fi
+
+# Merge the input PDFs into a single PDF
+pdfunite "$@" "output.pdf"
+
+# Exit the script
+exit 0
+
