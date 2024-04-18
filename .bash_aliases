@@ -19,6 +19,7 @@ alias rm='rm -iv'
 alias mkdir='mkdir -p'
 alias c='clear'
 alias n='nnn -A'
+alias cat='bat -p'
 
 # safe reboot
 alias reboot='sudo shutdown -r now'
