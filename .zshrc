@@ -16,8 +16,17 @@ ZSH_THEME="robbyrussell"
 # If set to an empty array, this variable will have no effect.
 # ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )
 
-# Would you like to use another custom folder than $ZSH/custom?
-# ZSH_CUSTOM=/path/to/new-custom-folder
+# Uncomment the following line if pasting URLs and other text is messed up.
+# DISABLE_MAGIC_FUNCTIONS="true"
+
+# Uncomment the following line to enable command auto-correction.
+# ENABLE_CORRECTION="true"
+
+# Uncomment the following line to display red dots whilst waiting for completion.
+# You can also set it to another string to have that shown instead of the default red dots.
+# e.g. COMPLETION_WAITING_DOTS="%F{yellow}waiting...%f"
+# Caution: this setting can cause issues with multiline prompts in zsh < 5.7.1 (see #5765)
+# COMPLETION_WAITING_DOTS="true"
 
 # Which plugins would you like to load?
 # Standard plugins can be found in $ZSH/plugins/
@@ -30,7 +39,19 @@ plugins=(
     zsh-autosuggestions
 )
 
-# User configuration
+# export MANPATH="/usr/local/man:$MANPATH"
+
+# Compilation flags
+# export ARCHFLAGS="-arch x86_64"
+
+# Set personal aliases, overriding those provided by oh-my-zsh libs,
+# plugins, and themes. Aliases can be placed here, though oh-my-zsh
+# users are encouraged to define aliases within the ZSH_CUSTOM folder.
+# For a full list of active aliases, run `alias`.
+#
+# Example aliases
+# alias zshconfig="mate ~/.zshrc"
+# alias ohmyzsh="mate ~/.oh-my-zsh"
 
 ZSH_CACHE_DIR=$HOME/.cache/oh-my-zsh
 if [[ ! -d $ZSH_CACHE_DIR ]]; then
@@ -41,6 +62,7 @@ fi
 
 . /usr/share/fzf/key-bindings.zsh
 . /usr/share/fzf/completion.zsh
+
 
 # =========== My configuration ===========
 
@@ -94,8 +116,11 @@ lazypush () {
 # Custom path addtions
 export $(envsubst < ~/.env)
 
+export ANDROID_HOME="$HOME/Android/Sdk"
 append_path "$HOME/.local/bin" # pipx executables
 append_path "$HOME/bin" # Custom scripts
+append_path "$ANDROID_HOME/emulator"
+append_path "$ANDROID_HOME/platform-tools"
 
 # Commands that want to run at the end of the file
 
@@ -108,14 +133,5 @@ export JAVA_HOME="/usr/lib/jvm/default"
 # Load RVM into a shell session *as a function*
 [[ -r "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
 
-# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
-append_path "$HOME/.rvm/bin"
+append_path "$HOME/.rvm/bin" # RVM, make sure this is the last PATH variable change.
 
-# pnpnp
-export PNPM_HOME="/home/chus/.local/share/pnpm"
-case ":$PATH:" in
-  *":$PNPM_HOME:"*) ;;
-  *) export PATH="$PNPM_HOME:$PATH" ;;
-esac
-# pnpm end
-#
