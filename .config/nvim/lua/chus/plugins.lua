@@ -9,8 +9,9 @@ local plugins = {
             { "nvim-lua/popup.nvim" },
             { "nvim-lua/plenary.nvim" },
             { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
-        }
+        },
     },
+
 
     -- Theme/UI
     {
@@ -18,7 +19,7 @@ local plugins = {
         name = "rose-pine",
         config = function()
             vim.cmd("colorscheme rose-pine")
-        end
+        end,
     },
     {
         "folke/trouble.nvim",
@@ -29,7 +30,6 @@ local plugins = {
             -- refer to the configuration section below
         },
     },
-
     -- Treesitter
     { { "nvim-treesitter/nvim-treesitter", build = ":TSUpdate" } },
     { "nvim-treesitter/playground" },
@@ -70,14 +70,48 @@ local plugins = {
     { "lervag/vimtex" },
     {
         "luukvbaal/nnn.nvim",
-        config = function() require("nnn").setup() end
+        config = function()
+            require("nnn").setup()
+        end,
     },
     { "kaarmu/typst.vim",           ft = "typst", lazy = false },
     -- These optional plugins should be loaded directly because of a bug in Packer lazy loading
     { "nvim-tree/nvim-web-devicons" },
     { "lewis6991/gitsigns.nvim" },
     --  { "romgrk/barbar.nvim" },
-    { "nvimtools/none-ls.nvim" }
+    { "nvimtools/none-ls.nvim" },
+
+    -- Gitsigns
+    {
+        "lewis6991/gitsigns.nvim",
+        requires = { "nvim-lua/plenary.nvim" },
+        config = function()
+            require("gitsigns").setup()
+        end,
+    },
+
+    -- Java LSP
+    {
+        "nvim-java/nvim-java",
+        dependencies = {
+            "nvim-java/lua-async-await",
+            "nvim-java/nvim-java-core",
+            "nvim-java/nvim-java-test",
+            "nvim-java/nvim-java-dap",
+            "MunifTanjim/nui.nvim",
+            "neovim/nvim-lspconfig",
+            "mfussenegger/nvim-dap",
+            {
+                "williamboman/mason.nvim",
+                opts = {
+                    registries = {
+                        "github:nvim-java/mason-registry",
+                        "github:mason-org/mason-registry",
+                    },
+                },
+            },
+        },
+    },
 }
 
 local opts = {}

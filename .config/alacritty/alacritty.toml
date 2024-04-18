@@ -1,13 +1,7 @@
-import = ["/home/chus/.config/alacritty/themes/themes/vscode.dark.toml"]
-
-[cursor.style]
-blinking = "On"
+import = [ "/home/chus/.config/alacritty/themes/omni.toml",]
 
 [env]
 TERM = "alacritty"
-
-[font.normal]
-family = "CaskaydiaCove NF"
 
 [scrolling]
 history = 10000
@@ -17,6 +11,17 @@ decorations = "full"
 dynamic_title = true
 opacity = 0.95
 
+[keyboard]
+[[keyboard.bindings]]
+key = "F11"
+action = "ToggleFullscreen"
+
 [window.dimensions]
 columns = 80
 lines = 24
+
+[cursor.style]
+blinking = "On"
+
+[font.normal]
+family = "CaskaydiaCove NF"

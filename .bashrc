@@ -1,3 +1,7 @@
+# ~/.bashrc: executed by bash(1) for non-login shells.
+# see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
+# for examples
+
 # If not running interactively, don't do anything
 case $- in
     *i*) ;;
@@ -81,14 +85,10 @@ fi
 # ==== Custom path additions ====
 
 export $(envsubst < ~/.env)
-
-export ANDROID_HOME="$HOME/Android/Sdk"
 append_path "$HOME/.local/bin" # pipx executables
 append_path "$HOME/bin" # Custom scripts
-append_path "$ANDROID_HOME/emulator"
-append_path "$ANDROID_HOME/platform-tools"
 
-# ===== Commands that want to run at the end of the file =====
+# ==== They want to be at the end ====
 
 # Set up Node Version Manager
 source /usr/share/nvm/init-nvm.sh
@@ -103,3 +103,11 @@ export JAVA_HOME="/usr/lib/jvm/default"
 [[ -r "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
 
 append_path "$HOME/.rvm/bin" # RVM, make sure this is the last PATH variable change.
+
+# pnpm
+export PNPM_HOME="/home/chus/.local/share/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end

@@ -1,0 +1,97 @@
+{
+    "layer": "top",
+    "position": "top",
+    "modules-left": ["sway/workspaces", "cpu", "memory"],
+    "modules-center": ["clock"],
+    "modules-right": ["tray", "backlight", "idle_inhibitor", "pulseaudio", "network", "battery"],
+
+    "sway/window": {
+        "max-length": 25,
+        "tooltip": false
+    },
+
+    // Left modules
+    "cpu": {
+        "interval": 10,
+        "format": "  {usage}%",
+        "max-length": 10,
+        "on-click": "alacritty -e 'htop'"
+    },
+
+    "memory": {
+        "interval": 30,
+        "format": "  {used:0.2f}GB",
+        "max-length": 10,
+        "tooltip": false,
+        "warning": 70,
+        "critical": 90
+    },
+
+    // Center modules
+    "clock": {
+        "interval": 1,
+        "locale": "C",
+        "format-alt": " {:%a, %b %d}"
+    },
+
+    // Right modules
+    "tray": {
+        "icon-size": 15
+    },
+
+    "backlight": {
+        "device": "intel_backlight",
+        "format": "{icon} {percent}%",
+        "format-icons": ["☀️", ""],
+        "on-scroll-down": "brightnessctl -c backlight set 1%-",
+        "on-scroll-up": "brightnessctl -c backlight set +1%"
+    },
+
+    "idle_inhibitor": {
+        "format": "{icon}",
+        "format-icons":{
+            "activated": "",
+            "deactivated": ""
+        }
+    },
+
+    "pulseaudio": {
+      "format": "{icon}  {volume}%",
+      "format-bluetooth": "{icon} {volume}% {format_source}",
+      "format-bluetooth-muted": " {format_source}",
+      "format-muted": "   {format_source}",
+      "format-icons": {
+        "headphone": "",
+        "hands-free": "",
+        "headset": "🎧",
+        "phone": "",
+        "portable": "",
+        "car": "",
+        "default": ["", "", ""]
+      },
+      "on-click": "pavucontrol"
+    },
+
+    "network": {
+        "format": "{icon}",
+        "format-wifi": "{icon} {signalStrength}%",
+        "format-icons": {
+            "wifi": ["󰤟", "󰤢" ,"󰤨"],
+            "ethernet": [""],
+            "disconnected": ["󰖪"]
+        },
+        "on-click": "alacritty -e nmtui",
+        "tooltip-format": "{essid}",
+    },
+
+    "battery": {
+        "states": {
+            "warning": 30,
+            "critical": 15
+        },
+        "format": "{icon}  {capacity}%",
+        "format-charging": "⚡  {capacity}%",
+        "format-plugged": "  {capacity}%",
+        "format-icons": ["", "", "", "", ""]
+    },
+}
