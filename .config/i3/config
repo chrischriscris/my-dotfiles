@@ -56,7 +56,7 @@ exec_always nm-applet &
 exec --no-startup-id setxkbmap -layout latam,latam
 
 # Start the gnome-keyring daemon
-exec --no-startup-id /usr/bin/gnome-keyring-daemon --start --components=secrets
+exec --no-startup-id /usr/bin/gnome-keyring-daemon --start --components=ssh,secrets,pkcs11
 
 ### Key bindings
 #
