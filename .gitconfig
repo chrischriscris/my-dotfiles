@@ -1,8 +1,18 @@
 [user]
 	email = 18-10892@usb.ve
-	name = Christopher Gomez
-
+	name = chrischriscris
 [init]
-    defaultBranch = main
-[safe]
-	directory = /opt/flutter
+	defaultBranch = main
+[pull]
+	rebase = false
+[credential]
+	helper = cache
+[color]
+	ui = true
+[format]
+	pretty = oneline
+[core]
+	autocrl = input
+	fileMode = true
+[alias]
+	lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
