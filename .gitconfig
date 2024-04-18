@@ -3,6 +3,6 @@
 	name = Christopher Gomez
 
 [init]
-    defaultBranch = master
+    defaultBranch = main
 [safe]
 	directory = /opt/flutter
