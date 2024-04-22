@@ -1,4 +1,4 @@
-import = [ "/home/chus/.config/alacritty/themes/themes/omni.toml",]
+import = [ "/home/chus/.config/alacritty/themes/omni.toml",]
 
 [env]
 TERM = "alacritty"

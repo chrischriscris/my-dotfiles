@@ -21,10 +21,19 @@ set $menu fuzzel
 for_window [class="^.*"] border pixel 2
 for_window [class="^.*"] client.focused #77dd77 #285577 #ffffff #2e9ef4 #285577
 
+# class                 border  backgr  text    indicator child_border
+client.focused          #6272A4 #6272A4 #F8F8F2 #6272A4   #6272A4
+client.focused_inactive #44475A #44475A #F8F8F2 #44475A   #44475A
+client.unfocused        #282A36 #282A36 #BFBFBF #282A36   #282A36
+client.urgent           #44475A #FF5555 #F8F8F2 #FF5555   #FF5555
+client.placeholder      #282A36 #282A36 #F8F8F2 #282A36   #282A36
+
+client.background       #F8F8F2
+
 ### Output configuration
 
 # Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
-output * bg /home/chus/hdd/Pictures/Wallpapers/chaewon-izone-bloomiz-uhdpaper.com-4K-6.641.jpg fill
+exec_always ~/bin/bgchange_wayland
 
 ### Idle configuration
 #
