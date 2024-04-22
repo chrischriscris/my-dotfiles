@@ -50,6 +50,8 @@ exec_always --no-startup-id picom &
 exec_always ~/bin/bgchange
 exec_always nm-applet &
 
+focus_follows_mouse no
+
 ### Input configuration
 
 # Change the keyboard layout to latam
