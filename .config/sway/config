@@ -34,6 +34,7 @@ client.background       #F8F8F2
 
 # Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
 exec_always ~/bin/bgchange_wayland
+exec ibus-daemon --xim --daemonize -r
 
 ### Idle configuration
 #
@@ -80,6 +81,8 @@ bindsym $mod+Shift+r reload
 
 # Exit sway (logs you out of your Wayland session)
 bindsym $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -B 'Yes, exit sway' 'swaymsg exit'
+
+bindsym $mod+End exec systemctl poweroff
 
 # Moving around:
 # Move  focus around
