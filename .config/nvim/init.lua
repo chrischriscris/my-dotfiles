@@ -11,6 +11,7 @@ if not vim.loop.fs_stat(lazypath) then
     })
 end
 
+-- Set default colorscheme
 vim.opt.rtp:prepend(lazypath)
 
 require("chus")

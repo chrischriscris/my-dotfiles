@@ -90,6 +90,15 @@ local plugins = {
         end,
     },
 
+    -- Kanagawa
+
+    {
+        "rebelot/kanagawa.nvim",
+        config = function()
+            require("kanagawa").setup()
+        end,
+    },
+
     -- Java LSP
     {
         "nvim-java/nvim-java",
