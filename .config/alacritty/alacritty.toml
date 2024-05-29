@@ -1,4 +1,4 @@
-import = [ "/home/chus/.config/alacritty/themes/omni.toml",]
+import = [ "/home/chus/.config/alacritty/themes/themes/Kanagawa.toml",]
 
 [env]
 TERM = "alacritty"
@@ -10,6 +10,7 @@ history = 10000
 decorations = "full"
 dynamic_title = true
 opacity = 0.95
+blur = true
 
 [keyboard]
 [[keyboard.bindings]]
