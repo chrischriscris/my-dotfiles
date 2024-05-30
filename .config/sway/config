@@ -19,16 +19,6 @@ set $menu fuzzel
 
 # No borders
 for_window [class="^.*"] border pixel 2
-for_window [class="^.*"] client.focused #77dd77 #285577 #ffffff #2e9ef4 #285577
-
-# class                 border  backgr  text    indicator child_border
-client.focused          #6272A4 #6272A4 #F8F8F2 #6272A4   #6272A4
-client.focused_inactive #44475A #44475A #F8F8F2 #44475A   #44475A
-client.unfocused        #282A36 #282A36 #BFBFBF #282A36   #282A36
-client.urgent           #44475A #FF5555 #F8F8F2 #FF5555   #FF5555
-client.placeholder      #282A36 #282A36 #F8F8F2 #282A36   #282A36
-
-client.background       #F8F8F2
 
 ### Output configuration
 
@@ -205,3 +195,19 @@ bar {
 }
 
 include /etc/sway/config.d/*
+
+set $peach     #fab387
+set $text      #cdd6f4
+set $base      #1e1e2e
+set $overlay0  #6c7086
+set $rosewater #f5e0dc
+set $mauve     #cba6f7
+set $mantle    #181825
+
+# target                 title     bg    text      indicator    border
+client.focused           $mantle   $mauve $mantle  $rosewater $mauve
+client.focused_inactive  $overlay0 $base  $text    $rosewater $overlay0
+client.unfocused         $overlay0 $base  $text    $rosewater $overlay0
+client.urgent            $peach    $base  $peach   $overlay0  $peach
+client.placeholder       $overlay0 $base  $text    $overlay0  $overlay0
+client.background        $base
