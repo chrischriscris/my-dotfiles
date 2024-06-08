@@ -83,9 +83,9 @@ TIMEFMT='%J   %U  user %S system %P cpu %*E total'$'\n'\
 
 # Custom aliases
 . ~/.bash_aliases
-for file in /etc/bash_completion.d/* ; do
-  source "$file"
-done
+# for file in /etc/bash_completion.d/* ; do
+#   source "$file"
+# done
 
 # Custom functions
 prepend_path() {
