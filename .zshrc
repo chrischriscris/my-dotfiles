@@ -121,6 +121,7 @@ append_path "$HOME/.local/bin" # pipx executables
 append_path "$HOME/bin" # Custom scripts
 append_path "$ANDROID_HOME/emulator"
 append_path "$ANDROID_HOME/platform-tools"
+append_path "$(go env GOBIN):$(go env GOPATH)/bin"
 
 # Commands that want to run at the end of the file
 
