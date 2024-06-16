@@ -46,7 +46,7 @@ focus_follows_mouse no
 ### Input configuration
 
 # Change the keyboard layout to latam
-exec --no-startup-id setxkbmap -layout latam,latam
+exec_always --no-startup-id setxkbmap -layout latam,latam
 
 # Start the gnome-keyring daemon
 exec --no-startup-id /usr/bin/gnome-keyring-daemon --start --components=ssh,secrets,pkcs11
