@@ -189,6 +189,9 @@ for_window [app_id="org.telegram.desktop"] floating enable, move position center
 # For ProtonVPN to work
 exec_always nm-applet &
 
+# Change wallpaper
+bindsym $mod+Shift+b exec ~/bin/bgchange_wayland
+
 # Status Bar:
 bar {
     swaybar_command waybar
