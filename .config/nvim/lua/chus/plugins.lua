@@ -41,13 +41,32 @@ local plugins = {
     { "theprimeagen/harpoon" },
     { "theprimeagen/refactoring.nvim" },
     { "mbbill/undotree" },
-    { "tpope/vim-fugitive" },
     { "nvim-treesitter/nvim-treesitter-context" },
+    -- { "tpope/vim-fugitive" },
+    {
+        "kdheepak/lazygit.nvim",
+        cmd = {
+            "LazyGit",
+            "LazyGitConfig",
+            "LazyGitCurrentFile",
+            "LazyGitFilter",
+            "LazyGitFilterCurrentFile",
+        },
+        -- optional for floating window border decoration
+        dependencies = {
+            "nvim-lua/plenary.nvim",
+        },
+        -- setting the keybinding for LazyGit with 'keys' is recommended in
+        -- order to load the plugin when the command is run for the first time
+        keys = {
+            { "<leader>lg", "<cmd>LazyGit<cr>", desc = "LazyGit" }
+        }
+    },
 
     -- LSP
     { "williamboman/mason.nvim" },
     { "williamboman/mason-lspconfig.nvim" },
-    { "VonHeikemen/lsp-zero.nvim",                               branch = "v3.x" },
+    { "VonHeikemen/lsp-zero.nvim",              branch = "v3.x" },
     { "neovim/nvim-lspconfig" },
     { "hrsh7th/cmp-nvim-lsp" },
     { "hrsh7th/nvim-cmp" },
