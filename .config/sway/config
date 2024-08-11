@@ -44,6 +44,7 @@ input * {
     xkb_layout latam
     tap enabled
     natural_scroll enabled
+    dwt disabled
 }
 
 # Enable num lock by default
