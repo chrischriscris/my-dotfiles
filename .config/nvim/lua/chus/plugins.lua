@@ -42,7 +42,7 @@ local plugins = {
     { "theprimeagen/refactoring.nvim" },
     { "mbbill/undotree" },
     { "nvim-treesitter/nvim-treesitter-context" },
-    -- { "tpope/vim-fugitive" },
+    { "tpope/vim-fugitive" },
     {
         "kdheepak/lazygit.nvim",
         cmd = {
