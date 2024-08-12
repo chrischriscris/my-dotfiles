@@ -7,86 +7,81 @@ local cmp_select = { behavior = cmp.SelectBehavior.Select }
 local cmp_map = cmp.mapping
 
 cmp.setup({
-    window = {
-        completion = cmp.config.window.bordered(),
-        documentation = cmp.config.window.bordered(),
-    },
-    mapping = cmp_map.preset.insert({
-        ["<C-p>"] = cmp_map.select_prev_item(cmp_select),
-        ["<C-n>"] = cmp_map.select_next_item(cmp_select),
-        ["<C-y>"] = cmp_map.confirm({ select = true }),
-        ["<C-Space>"] = cmp_map.complete(),
-        ["<Tab>"] = nil,
-        ["<S-Tab>"] = nil,
-    }),
-    sources = {
-        { name = "nvim_lsp" },
-        { name = "mason" },
-        { name = "null" },
-    },
+	window = {
+		completion = cmp.config.window.bordered(),
+		documentation = cmp.config.window.bordered(),
+	},
+	mapping = cmp_map.preset.insert({
+		["<C-p>"] = cmp_map.select_prev_item(cmp_select),
+		["<C-n>"] = cmp_map.select_next_item(cmp_select),
+		["<C-y>"] = cmp_map.confirm({ select = true }),
+		["<C-Space>"] = cmp_map.complete(),
+		["<Tab>"] = nil,
+		["<S-Tab>"] = nil,
+	}),
+	sources = {
+		{ name = "nvim_lsp" },
+		{ name = "mason" },
+		{ name = "null" },
+	},
 })
 
 lsp.set_preferences({
-    suggest_lsp_servers = false,
-    sign_icons = {
-        error = "E",
-        warn = "W",
-        hint = "H",
-        info = "I",
-    },
+	suggest_lsp_servers = false,
+	sign_icons = {
+		error = "E",
+		warn = "W",
+		hint = "H",
+		info = "I",
+	},
 })
 
 lsp.on_attach(function(client, bufnr)
-    local opts = { buffer = bufnr, remap = false }
+	local opts = { buffer = bufnr, remap = false }
 
-    vim.keymap.set("n", "gd", function()
-        vim.lsp.buf.definition()
-    end, opts)
-    vim.keymap.set("n", "K", function()
-        vim.lsp.buf.hover()
-    end, opts)
-    vim.keymap.set("n", "<leader>vws", function()
-        vim.lsp.buf.workspace_symbol()
-    end, opts)
-    vim.keymap.set("n", "<leader>vd", function()
-        vim.diagnostic.open_float()
-    end, opts)
-    vim.keymap.set("n", "[d", function()
-        vim.diagnostic.goto_next()
-    end, opts)
-    vim.keymap.set("n", "]d", function()
-        vim.diagnostic.goto_prev()
-    end, opts)
-    vim.keymap.set("n", "<leader>vca", function()
-        vim.lsp.buf.code_action()
-    end, opts)
-    vim.keymap.set("n", "<leader>vrr", function()
-        vim.lsp.buf.references()
-    end, opts)
-    vim.keymap.set("n", "<leader>vrn", function()
-        vim.lsp.buf.rename()
-    end, opts)
-    vim.keymap.set("i", "<C-h>", function()
-        vim.lsp.buf.signature_help()
-    end, opts)
+	vim.keymap.set("n", "gd", function()
+		vim.lsp.buf.definition()
+	end, opts)
+	vim.keymap.set("n", "K", function()
+		vim.lsp.buf.hover()
+	end, opts)
+	vim.keymap.set("n", "<leader>vws", function()
+		vim.lsp.buf.workspace_symbol()
+	end, opts)
+	vim.keymap.set("n", "<leader>vd", function()
+		vim.diagnostic.open_float()
+	end, opts)
+	vim.keymap.set("n", "[d", function()
+		vim.diagnostic.goto_next()
+	end, opts)
+	vim.keymap.set("n", "]d", function()
+		vim.diagnostic.goto_prev()
+	end, opts)
+	vim.keymap.set("n", "<leader>vca", function()
+		vim.lsp.buf.code_action()
+	end, opts)
+	vim.keymap.set("n", "<leader>vrr", function()
+		vim.lsp.buf.references()
+	end, opts)
+	vim.keymap.set("n", "<leader>vrn", function()
+		vim.lsp.buf.rename()
+	end, opts)
+	vim.keymap.set("i", "<C-h>", function()
+		vim.lsp.buf.signature_help()
+	end, opts)
 end)
-
--- Java configuration
-require('java').setup()
-require('lspconfig').jdtls.setup({})
-
 
 -- Mason configuration
 require("mason").setup({})
 require("mason-lspconfig").setup({
-    ensure_installed = { "tsserver", "rust_analyzer" },
-    handlers = { lsp.default_setup },
+	ensure_installed = { "tsserver", "rust_analyzer", "gopls" },
+	handlers = { lsp.default_setup },
 })
 
 lsp.setup()
 
 vim.diagnostic.config({
-    virtual_text = true,
+	virtual_text = true,
 })
 
 -- Null LS configuration
@@ -97,11 +92,15 @@ local formatting = null_ls.builtins.formatting
 local completion = null_ls.builtins.completion
 
 null_ls.setup({
-    sources = {
-        formatting.stylua,
-        formatting.prettier,
-        formatting.typstfmt,
+	sources = {
+		formatting.stylua,
+		formatting.prettier,
+		formatting.typstfmt,
 
-        completion.spell,
-    },
+		completion.spell,
+	},
 })
+
+-- Python's Ruff configuration
+-- Configure better later, I don't have time now
+require("lspconfig").ruff.setup({})
