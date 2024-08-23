@@ -1,5 +1,4 @@
 local plugins = {
-    { "folke/which-key.nvim" },
     { "folke/neoconf.nvim" },
     { "folke/neodev.nvim" },
     {
@@ -62,41 +61,26 @@ local plugins = {
             { "<leader>lg", "<cmd>LazyGit<cr>", desc = "LazyGit" }
         }
     },
+    {
+        'MeanderingProgrammer/render-markdown.nvim',
+        opts = {},
+        dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' },
+    },
 
     -- LSP
     { "williamboman/mason.nvim" },
     { "williamboman/mason-lspconfig.nvim" },
-    { "VonHeikemen/lsp-zero.nvim",              branch = "v3.x" },
+    { "VonHeikemen/lsp-zero.nvim",        branch = "v3.x" },
     { "neovim/nvim-lspconfig" },
     { "hrsh7th/cmp-nvim-lsp" },
     { "hrsh7th/nvim-cmp" },
     { "L3MON4D3/LuaSnip" },
-    -- {
-    --     dependencies = {
-    --         { "williamboman/mason-lspconfig.nvim" },
-
-    --         -- Autocompletion
-    --         { "hrsh7th/cmp-buffer" },
-    --         { "hrsh7th/cmp-path" },
-    --         { "saadparwaiz1/cmp_luasnip" },
-    --         { "hrsh7th/cmp-nvim-lua" },
-
-    --         -- Snippets
-    --         { "rafamadriz/friendly-snippets" },
-    --     }
-    -- },
     { "folke/zen-mode.nvim" },
-    { "github/copilot.vim" },
+    -- { "github/copilot.vim" },
     { "eandrju/cellular-automaton.nvim" },
     { "laytan/cloak.nvim" },
-    { "lervag/vimtex" },
-    {
-        "luukvbaal/nnn.nvim",
-        config = function()
-            require("nnn").setup()
-        end,
-    },
     { "kaarmu/typst.vim",           ft = "typst", lazy = false },
+
     -- These optional plugins should be loaded directly because of a bug in Packer lazy loading
     { "nvim-tree/nvim-web-devicons" },
     { "nvimtools/none-ls.nvim" },
