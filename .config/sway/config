@@ -10,7 +10,7 @@ set $up k
 set $right l
 
 # Terminal emulator
-set $term alacritty
+set $term kitty
 
 # Application launcher
 # Note: pass the final command to swaymsg so that the resulting window can be opened
