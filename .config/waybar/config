@@ -15,7 +15,7 @@
         "interval": 10,
         "format": "  {usage}%",
         "max-length": 10,
-        "on-click": "alacritty -e 'htop'"
+        "on-click": "kitty -e 'htop'"
     },
 
     "memory": {
@@ -80,7 +80,7 @@
             "ethernet": [""],
             "disconnected": ["󰖪"]
         },
-        "on-click": "alacritty -e nmtui",
+        "on-click": "kitty -e nmtui",
         "tooltip-format": "{essid}",
     },
 
