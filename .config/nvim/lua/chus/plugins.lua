@@ -56,11 +56,11 @@ local plugins = {
     },
 
     -- Better file explorer
-    {
-        "stevearc/oil.nvim",
-        opts = {},
-        dependencies = { "nvim-tree/nvim-web-devicons" },
-    },
+    -- {
+    --     "stevearc/oil.nvim",
+    --     opts = {},
+    --     dependencies = { "nvim-tree/nvim-web-devicons" },
+    -- },
 
     -- LSP
     { "williamboman/mason.nvim" },
