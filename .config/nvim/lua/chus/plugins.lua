@@ -25,11 +25,7 @@ local plugins = {
     {
         "folke/trouble.nvim",
         dependencies = { "nvim-tree/nvim-web-devicons" },
-        opts = {
-            -- your configuration comes here
-            -- or leave it empty to use the default settings
-            -- refer to the configuration section below
-        },
+        opts = {},
     },
 
     -- Treesitter
@@ -44,27 +40,26 @@ local plugins = {
     { "tpope/vim-fugitive" },
     {
         "kdheepak/lazygit.nvim",
-        cmd = {
-            "LazyGit",
-            "LazyGitConfig",
-            "LazyGitCurrentFile",
-            "LazyGitFilter",
-            "LazyGitFilterCurrentFile",
-        },
+        cmd = { "LazyGit", "LazyGitConfig", "LazyGitCurrentFile", "LazyGitFilter", "LazyGitFilterCurrentFile" },
         -- optional for floating window border decoration
-        dependencies = {
-            "nvim-lua/plenary.nvim",
-        },
+        dependencies = { "nvim-lua/plenary.nvim" },
         -- setting the keybinding for LazyGit with 'keys' is recommended in
         -- order to load the plugin when the command is run for the first time
         keys = {
-            { "<leader>lg", "<cmd>LazyGit<cr>", desc = "LazyGit" }
-        }
+            { "<leader>lg", "<cmd>LazyGit<cr>", desc = "LazyGit" },
+        },
     },
     {
-        'MeanderingProgrammer/render-markdown.nvim',
+        "MeanderingProgrammer/render-markdown.nvim",
         opts = {},
-        dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' },
+        dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-tree/nvim-web-devicons" },
+    },
+
+    -- Better file explorer
+    {
+        "stevearc/oil.nvim",
+        opts = {},
+        dependencies = { "nvim-tree/nvim-web-devicons" },
     },
 
     -- LSP
@@ -74,12 +69,10 @@ local plugins = {
     { "neovim/nvim-lspconfig" },
     { "hrsh7th/cmp-nvim-lsp" },
     { "hrsh7th/nvim-cmp" },
-    { "L3MON4D3/LuaSnip" },
-    { "folke/zen-mode.nvim" },
     -- { "github/copilot.vim" },
     { "eandrju/cellular-automaton.nvim" },
     { "laytan/cloak.nvim" },
-    { "kaarmu/typst.vim",           ft = "typst", lazy = false },
+    { "kaarmu/typst.vim",                 ft = "typst",   lazy = false },
 
     -- These optional plugins should be loaded directly because of a bug in Packer lazy loading
     { "nvim-tree/nvim-web-devicons" },
@@ -90,9 +83,7 @@ local plugins = {
         "lewis6991/gitsigns.nvim",
         requires = { "nvim-lua/plenary.nvim" },
         config = function()
-            require("gitsigns").setup({
-                current_line_blame = true,
-            })
+            require("gitsigns").setup({ current_line_blame = true })
         end,
     },
 }
