@@ -95,7 +95,6 @@ null_ls.setup({
 	sources = {
 		formatting.stylua,
 		formatting.prettier,
-		formatting.typstfmt,
 
 		completion.spell,
 	},
@@ -108,7 +107,7 @@ local lspconfig = require("lspconfig")
 lspconfig.ruff.setup({})
 
 lspconfig.tinymist.setup{
-    -- vvv This is to mitigate a neovim bug, review later to see if it's fixed
+    -- This is here to mitigate a neovim bug, review later to see if it's fixed
     -- https://github.com/Myriad-Dreamin/tinymist/issues/638
     offset_encoding = "utf-8",
     settings = {
