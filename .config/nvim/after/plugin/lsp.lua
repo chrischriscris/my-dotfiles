@@ -101,6 +101,18 @@ null_ls.setup({
 	},
 })
 
+local lspconfig = require("lspconfig")
+
 -- Python's Ruff configuration
 -- Configure better later, I don't have time now
-require("lspconfig").ruff.setup({})
+lspconfig.ruff.setup({})
+
+lspconfig.tinymist.setup{
+    -- vvv This is to mitigate a neovim bug, review later to see if it's fixed
+    -- https://github.com/Myriad-Dreamin/tinymist/issues/638
+    offset_encoding = "utf-8",
+    settings = {
+        formatterMode = "typstyle",
+        exportPdf = "onSave",
+    },
+}
