@@ -37,7 +37,7 @@ for_window [class="TelegramDesktop"] floating enable, move position center, resi
 
 ### Idle configuration
 
-exec_always --no-startup-id picom &
+exec_always --no-startup-id picom --backend glx &
 exec_always ~/bin/bgchange
 exec_always nm-applet &
 
