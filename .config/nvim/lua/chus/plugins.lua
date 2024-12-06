@@ -87,6 +87,16 @@ local plugins = {
             require("gitsigns").setup({ current_line_blame = true })
         end,
     },
+
+    -- Surround
+    {
+        "kylechui/nvim-surround",
+        version = "*",
+        event = "VeryLazy",
+        config = function()
+            require("nvim-surround").setup({})
+        end,
+    },
 }
 
 local opts = {}
