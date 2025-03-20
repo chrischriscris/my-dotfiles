@@ -39,3 +39,5 @@ vim.g.netrw_banner = 0
 vim.g.netrw_winsize = 25
 
 require("chus.plugins")
+
+vim.cmd("colorscheme catppuccin-mocha")

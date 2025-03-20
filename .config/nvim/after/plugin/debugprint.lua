@@ -1,3 +1,10 @@
+local js_like = {
+    left = 'console.info("',
+    right = '")',
+    mid_var = '", ',
+    right_var = ")",
+}
+
 require("debugprint").setup({
     keymaps = {
         normal = {
@@ -26,5 +33,10 @@ require("debugprint").setup({
         delete_debug_prints = "DeleteDebugPrints",
         reset_debug_prints_counter = "ResetDebugPrintsCounter",
     },
-    -- … Other options
+    filetypes = {
+        ["javascript"] = js_like,
+        ["javascriptreact"] = js_like,
+        ["typescript"] = js_like,
+        ["typescriptreact"] = js_like,
+    },
 })
