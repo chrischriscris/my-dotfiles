@@ -79,7 +79,7 @@ exec --no-startup-id /usr/bin/gnome-keyring-daemon --start --components=ssh,secr
 
     # Exit sway (logs you out of your Wayland session)
     bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
-    bindsym $mod+Pause exec "systemctl poweroff"
+    bindsym $mod+End exec "systemctl poweroff"
 
 #
 # Moving around:
