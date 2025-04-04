@@ -74,6 +74,12 @@ local plugins = {
         lazy = false, -- Required to make line highlighting work before debugprint is first used
         version = "*", -- Remove if you DON'T want to use the stable version
     },
+    {
+        "catgoose/nvim-colorizer.lua",
+        event = "BufReadPre",
+        opts = { -- set to setup table
+        },
+    },
 
     -- LSP
     { "williamboman/mason.nvim" },
