@@ -29,3 +29,6 @@ alias shutdown='sudo shutdown now'
 
 # available memory
 alias fm='free -m'
+
+# programs
+alias lvim="NVIM_APPNAME=lazyvim nvim"
