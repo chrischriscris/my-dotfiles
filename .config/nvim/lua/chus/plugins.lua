@@ -32,6 +32,12 @@ local plugins = {
         priority = 1000,
         opts = {},
     },
+    {
+        "nickkadutskyi/jb.nvim",
+        lazy = false,
+        priority = 1000,
+        opts = {},
+    },
 
     {
         "folke/trouble.nvim",

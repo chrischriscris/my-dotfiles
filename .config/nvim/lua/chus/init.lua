@@ -40,4 +40,5 @@ vim.g.netrw_winsize = 25
 
 require("chus.plugins")
 
-vim.cmd("colorscheme catppuccin-latte")
+vim.cmd("colorscheme jb")
+vim.cmd("set background=light")
