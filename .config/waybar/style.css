@@ -100,3 +100,7 @@
 #temperature.critical {
   color: #800020;
 }
+
+#custom-notification {
+  font-family: "JetBrainsMono Nerd Font";
+}

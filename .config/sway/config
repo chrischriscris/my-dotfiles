@@ -180,6 +180,10 @@ bindsym $mod+Print exec ~/bin/screen-screenshot ~/hdd/Pictures/Screenshots/$(dat
 bindsym Ctrl+Shift+Escape exec $term --class htop-keybind -e htop
 for_window [app_id="htop-keybind"] floating enable, move position center
 
+### Notifications
+exec swaync
+bindsym $mod+Shift+n exec swaync-client -t -sw
+
 ### Custom misc
 
 # For IntelliJ
