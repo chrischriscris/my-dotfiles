@@ -91,27 +91,11 @@ local formatting = null_ls.builtins.formatting
 -- local diagnostics = null_ls.builtins.diagnostics
 local completion = null_ls.builtins.completion
 
-null_ls.setup({
-	sources = {
-		formatting.stylua,
-		formatting.prettier,
+local sources = {
+	formatting.stylua,
+	formatting.prettierd,
 
-		completion.spell,
-	},
-})
-
-local lspconfig = require("lspconfig")
-
--- Python's Ruff configuration
--- Configure better later, I don't have time now
-lspconfig.ruff.setup({})
-
-lspconfig.tinymist.setup{
-    -- This is here to mitigate a neovim bug, review later to see if it's fixed
-    -- https://github.com/Myriad-Dreamin/tinymist/issues/638
-    offset_encoding = "utf-8",
-    settings = {
-        formatterMode = "typstyle",
-        exportPdf = "onSave",
-    },
+	completion.spell,
 }
+
+null_ls.setup({ sources = sources })
