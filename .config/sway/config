@@ -26,6 +26,9 @@ for_window [class="^.*"] border pixel 2
 exec_always ~/bin/bgchange_wayland
 exec ibus-daemon --xim --daemonize -r
 
+# Control screen temperature
+exec_always wlsunset -o eDP-1 -l 10.5 -L -66.8 -T 5351 -t 2000 -g 0.95
+
 ### Idle configuration
 #
 # Example configuration:
