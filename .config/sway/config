@@ -178,6 +178,8 @@ bindsym Print exec ~/bin/area-screenshot
 bindsym Ctrl+Print exec ~/bin/window-screenshot
 # Mod+Print for full screenshot and save to file
 bindsym $mod+Print exec ~/bin/screen-screenshot ~/hdd/Pictures/Screenshots/$(date +%Y-%m-%d-%H-%M-%S).png
+# Mod+Shift+c to save clipboard picture
+bindsym $mod+Shift+c exec ~/bin/save-clipboard-picture
 
 # Ctrl+Shift+Escape for htop in a floating window
 bindsym Ctrl+Shift+Escape exec $term --class htop-keybind -e htop
@@ -195,8 +197,14 @@ focus_follows_mouse no
 # Telegram opens in floating
 for_window [app_id="org.telegram.desktop"] floating enable, move position center, resize set 380 504
 
-# For ProtonVPN to work
-# exec_always nm-applet &
+# Swayidle
+exec_always {
+    swayidle -w \
+        timeout 900 'swaylock -f -c 000000' \
+        timeout 1200 'swaymsg "output * dpms off"' \
+        resume 'swaymsg "output * dpms on"' \
+        before-sleep 'swaylock -f -c 000000'
+}
 
 # Change wallpaper
 bindsym $mod+Shift+b exec ~/bin/bgchange_wayland
