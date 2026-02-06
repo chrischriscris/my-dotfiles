@@ -188,6 +188,9 @@ for_window [app_id="htop-keybind"] floating enable, move position center
 ### Notifications
 exec dunst &
 
+### Battery monitor (kills existing instance on reload)
+exec_always ~/bin/battery-monitor-launcher
+
 ### Custom misc
 
 # For IntelliJ
