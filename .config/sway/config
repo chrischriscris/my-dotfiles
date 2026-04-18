@@ -44,7 +44,9 @@ exec_always wlsunset -o eDP-1 -l 10.5 -L -66.8 -T 5351 -t 2000 -g 0.95
 
 ### Input configuration
 input * {
-    xkb_layout latam
+    xkb_model mac
+    xkb_layout us
+    xkb_variant intl
     tap enabled
     natural_scroll enabled
     dwt disabled
