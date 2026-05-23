@@ -35,7 +35,6 @@ ZSH_THEME="robbyrussell"
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
     git
-    nvm
     zsh-autosuggestions
 )
 
@@ -130,26 +129,41 @@ append_path "$HOME/.local/bin" # pipx executables
 append_path "$HOME/bin" # Custom scripts
 append_path "$ANDROID_HOME/emulator"
 append_path "$ANDROID_HOME/platform-tools"
-append_path "$(go env GOBIN):$(go env GOPATH)/bin"
-
-# Commands that want to run at the end of the file
+# Hardcoded instead of `go env` to avoid forking go on every shell start.
+append_path "$HOME/go/bin"
 
 # Set up java home
 export JAVA_HOME="/usr/lib/jvm/default"
 
-# RVM bash completion
-[[ -r "$HOME/.rvm/scripts/completion" ]] && source "$HOME/.rvm/scripts/completion"
-
-# Load RVM into a shell session *as a function*
-[[ -r "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
-
-append_path "$HOME/.rvm/bin" # RVM, make sure this is the last PATH variable change.
-
-
-
+# Lazy-load nvm: avoids the ~250ms cost of sourcing nvm.sh on every shell.
+# First call to nvm/node/npm/npx/corepack/pnpm/yarn replaces the shim with
+# the real thing. Trade-off: `.nvmrc` auto-switching on cd is gone.
 export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+_load_nvm() {
+  unset -f nvm node npm npx corepack pnpm yarn 2>/dev/null
+  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+  [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+}
+for _cmd in nvm node npm npx corepack pnpm yarn; do
+  eval "$_cmd() { _load_nvm; $_cmd \"\$@\"; }"
+done
+unset _cmd
+# Put the current default node on PATH so `which node` works pre-load and
+# completions see it. Lazy shims still intercept actual invocations.
+if [ -s "$NVM_DIR/alias/default" ]; then
+  _nvm_default="$(<"$NVM_DIR/alias/default")"
+  [ "${_nvm_default#v}" = "$_nvm_default" ] && _nvm_default="v$_nvm_default"
+  [ -d "$NVM_DIR/versions/node/$_nvm_default/bin" ] && \
+    append_path "$NVM_DIR/versions/node/$_nvm_default/bin"
+  unset _nvm_default
+fi
 
 # Hyros config
 export H_DIR=/home/chus/hyros-services
+
+# Recompile ~/.zshrc.zwc when the source is newer, skipping the parse step
+# on subsequent shells. Zsh looks for .zwc next to the path it sourced
+# (~/.zshrc), not next to the symlink target, so we compile there.
+if [ ! -f ~/.zshrc.zwc ] || [ ~/.zshrc -nt ~/.zshrc.zwc ]; then
+  zcompile ~/.zshrc
+fi
