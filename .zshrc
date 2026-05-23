@@ -121,24 +121,12 @@ function y() {
 	rm -f -- "$tmp"
 }
 
-# Custom path addtions
-export $(envsubst < ~/.env)
-
-export ANDROID_HOME="$HOME/Android/Sdk"
-append_path "$HOME/.local/bin" # pipx executables
-append_path "$HOME/bin" # Custom scripts
-append_path "$ANDROID_HOME/emulator"
-append_path "$ANDROID_HOME/platform-tools"
-# Hardcoded instead of `go env` to avoid forking go on every shell start.
-append_path "$HOME/go/bin"
-
-# Set up java home
-export JAVA_HOME="/usr/lib/jvm/default"
+# Env vars, PATH, JAVA_HOME, ANDROID_HOME, NVM_DIR, H_DIR are set in ~/.zshenv
+# so they're available to non-interactive shells (scripts, IDEs, cron).
 
 # Lazy-load nvm: avoids the ~250ms cost of sourcing nvm.sh on every shell.
 # First call to nvm/node/npm/npx/corepack/pnpm/yarn replaces the shim with
 # the real thing. Trade-off: `.nvmrc` auto-switching on cd is gone.
-export NVM_DIR="$HOME/.nvm"
 _load_nvm() {
   unset -f nvm node npm npx corepack pnpm yarn 2>/dev/null
   [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
@@ -148,18 +136,6 @@ for _cmd in nvm node npm npx corepack pnpm yarn; do
   eval "$_cmd() { _load_nvm; $_cmd \"\$@\"; }"
 done
 unset _cmd
-# Put the current default node on PATH so `which node` works pre-load and
-# completions see it. Lazy shims still intercept actual invocations.
-if [ -s "$NVM_DIR/alias/default" ]; then
-  _nvm_default="$(<"$NVM_DIR/alias/default")"
-  [ "${_nvm_default#v}" = "$_nvm_default" ] && _nvm_default="v$_nvm_default"
-  [ -d "$NVM_DIR/versions/node/$_nvm_default/bin" ] && \
-    append_path "$NVM_DIR/versions/node/$_nvm_default/bin"
-  unset _nvm_default
-fi
-
-# Hyros config
-export H_DIR=/home/chus/hyros-services
 
 # Recompile ~/.zshrc.zwc when the source is newer, skipping the parse step
 # on subsequent shells. Zsh looks for .zwc next to the path it sourced
