@@ -12,14 +12,9 @@ fi
 
 [ -r "$HOME/.cargo/env" ] && . "$HOME/.cargo/env"
 
-# Toolchain roots needed by non-interactive build tools.
-if [ "$(uname -s)" = Darwin ]; then
-  export JAVA_HOME="$(/usr/libexec/java_home 2>/dev/null || printf '%s' '/opt/homebrew/opt/openjdk/libexec/openjdk.jdk/Contents/Home')"
-  export ANDROID_HOME="$HOME/Library/Android/sdk"
-else
-  export JAVA_HOME="/usr/lib/jvm/default"
-  export ANDROID_HOME="$HOME/Android/Sdk"
-fi
+# Toolchain roots selected by the active Stow platform package.
+[ -r "$HOME/.config/zsh/platform-env.zsh" ] && \
+  . "$HOME/.config/zsh/platform-env.zsh"
 export NVM_DIR="$HOME/.nvm"
 
 # Hyros workspace.

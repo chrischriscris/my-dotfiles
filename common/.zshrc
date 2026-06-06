@@ -60,38 +60,13 @@ plugins=(
 
 ZSH_CACHE_DIR=$HOME/.cache/oh-my-zsh
 if [[ ! -d $ZSH_CACHE_DIR ]]; then
-  mkdir $ZSH_CACHE_DIR
+  mkdir -p "$ZSH_CACHE_DIR"
 fi
 ZSH_DISABLE_COMPFIX=true
 
 [[ -r "$ZSH/oh-my-zsh.sh" ]] && . "$ZSH/oh-my-zsh.sh"
 
-# fzf configuration - different paths on Linux vs macOS
-if [[ "$(uname -s)" == Darwin ]]; then
-    . /opt/homebrew/opt/fzf/shell/key-bindings.zsh 2>/dev/null || . /usr/local/opt/fzf/shell/key-bindings.zsh 2>/dev/null
-    . /opt/homebrew/opt/fzf/shell/completion.zsh 2>/dev/null || . /usr/local/opt/fzf/shell/completion.zsh 2>/dev/null
-else
-    . /usr/share/fzf/key-bindings.zsh
-    . /usr/share/fzf/completion.zsh
-fi
-
-
 # =========== My configuration ===========
-
-# Custom time command
-if [[ "$(uname -s)" == Darwin ]]; then
-    MAX_MEMORY_UNITS=KB
-else
-    MAX_MEMORY_UNITS=MB
-fi
-
-TIMEFMT='%J   %U  user %S system %P cpu %*E total'$'\n'\
-'avg shared (code):         %X KB'$'\n'\
-'avg unshared (data/stack): %D KB'$'\n'\
-'total (sum):               %K KB'$'\n'\
-'max memory:                %M '$MAX_MEMORY_UNITS''$'\n'\
-'page faults from disk:     %F'$'\n'\
-'other page faults:         %R'
 
 # Custom aliases
 . ~/.bash_aliases
@@ -127,12 +102,6 @@ function y() {
 	rm -f -- "$tmp"
 }
 
-# Android SDK - different paths on Linux vs macOS
-if [[ "$(uname -s)" == Darwin ]]; then
-    export ANDROID_HOME="$HOME/Library/Android/sdk"
-else
-    export ANDROID_HOME="$HOME/Android/Sdk"
-fi
 append_path "$HOME/.local/bin" # pipx executables
 append_path "$HOME/bin" # Custom scripts
 append_path "$ANDROID_HOME/emulator"
@@ -140,13 +109,6 @@ append_path "$ANDROID_HOME/platform-tools"
 append_path "$HOME/go/bin"
 
 # Commands that want to run at the end of the file
-
-# Set up java home - different paths on Linux vs macOS
-if [[ "$(uname -s)" == Darwin ]]; then
-    export JAVA_HOME="$(/usr/libexec/java_home 2>/dev/null || echo '/opt/homebrew/opt/openjdk/libexec/openjdk.jdk/Contents/Home')"
-else
-    export JAVA_HOME="/usr/lib/jvm/default"
-fi
 
 # RVM bash completion
 [[ -r "$HOME/.rvm/scripts/completion" ]] && source "$HOME/.rvm/scripts/completion"
@@ -157,12 +119,10 @@ fi
 append_path "$HOME/.rvm/bin" # RVM, make sure this is the last PATH variable change.
 # Hyros config
 export H_DIR=$HOME/hyros-services
-if [[ "$(uname -s)" == Darwin ]]; then
-    prepend_path "/opt/homebrew/opt/openjdk/bin"
-    prepend_path "/opt/homebrew/opt/mysql-client/bin"
-    export LDFLAGS="-L/opt/homebrew/opt/mysql-client/lib"
-    export CPPFLAGS="-I/opt/homebrew/opt/mysql-client/include"
-fi
+
+# Interactive settings selected by the active Stow platform package.
+[[ -r "$HOME/.config/zsh/platform.zsh" ]] && \
+    source "$HOME/.config/zsh/platform.zsh"
 
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="$HOME/.sdkman"
