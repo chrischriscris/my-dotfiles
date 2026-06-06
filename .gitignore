@@ -1,2 +1,10 @@
-.config/nvim/lazy-lock.json
-.config/htop/htoprc
+common/.config/nvim/lazy-lock.json
+
+# Generated state and local secrets
+**/.DS_Store
+**/*.log
+**/*.bak
+**/node_modules/
+**/hosts.yml
+**/state*.json
+**/restore-*.json

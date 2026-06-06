@@ -1,0 +1,41 @@
+[appearance]
+
+[appearance.vertical_tabs]
+enabled = false
+
+[appearance.themes]
+theme = "dark"
+system_theme = false
+
+[appearance.window]
+zoom_level = 125
+
+[agents]
+cloud_conversation_storage_enabled = true
+
+[agents.warp_agent]
+is_any_ai_enabled = true
+
+[agents.warp_agent.other]
+show_conversation_history = true
+show_agent_notifications = true
+
+[agents.third_party]
+should_render_cli_agent_toolbar = true
+
+[warp_drive]
+enabled = true
+
+[general]
+default_session_mode = "agent"
+
+[privacy]
+telemetry_enabled = true
+crash_reporting_enabled = true
+
+[code]
+
+[code.editor]
+show_code_review_button = true
+show_global_search = true
+show_project_explorer = true

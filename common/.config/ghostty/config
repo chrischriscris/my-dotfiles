@@ -1,0 +1,16 @@
+# Font
+font-size = 16
+font-family = "JetBrainsMono Nerd Font Mono"
+
+# Window
+window-width = 80
+window-height = 24
+background-opacity = 0.9
+macos-titlebar-style = transparent
+theme = Raycast Dark
+
+# Clipboard
+copy-on-select = true
+
+# Shaders
+custom-shader = shaders/cursor_trail.glsl

@@ -1,0 +1,58 @@
+[sidebar]
+width = 280
+visibility = "hidden"
+
+[pane_layout]
+laptop = "compact"
+large_display = "balanced"
+ultrawide = "balanced"
+right_split_behavior = "adaptive"
+visible_split_window_width = 1920
+
+[panes]
+show_labels = true
+inactive_opacity = 0.7
+show_project_icons = true
+smooth_scroll_enabled = false
+
+[open_with]
+primary_target_id = "finder"
+enabled_target_ids = ["finder", "vscode", "cursor", "xcode"]
+
+[server_detection]
+passive_detection_enabled = true
+preferred_browser_id = "system-default"
+enabled_browser_target_ids = ["safari", "chrome", "firefox", "arc", "brave", "edge", "orion", "dia", "zen", "sizzy", "mullvad-browser", "helium", "vivaldi", "opera", "chromium", "tor-browser", "velja", "sigmaos", "floorp", "comet"]
+ignored_port_rules = []
+
+[error_reporting]
+enabled = true
+
+[updates]
+channel = "stable"
+
+[notifications]
+sound_name = ""
+
+[confirmations]
+confirm_before_closing_pane = true
+confirm_before_closing_window = true
+confirm_before_quitting = true
+
+[clipboard]
+always_clean_copies = false
+
+[restore]
+restore_workspace_on_launch = true
+
+[agent_teams]
+enabled = false
+
+[agent_caffeination]
+enabled = true
+
+[menu_bar]
+show_status_item = true
+
+[agent_integrations]
+grandfathered_v1 = true

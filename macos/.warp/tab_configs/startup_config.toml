@@ -1,0 +1,8 @@
+name = "New tab: chus"
+
+[[panes]]
+id = "main"
+type = "terminal"
+directory = "/Users/chus"
+
+[params]
