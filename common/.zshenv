@@ -10,6 +10,8 @@ if [ -r "$HOME/.env" ]; then
   set +a
 fi
 
+[ -r "$HOME/.cargo/env" ] && . "$HOME/.cargo/env"
+
 # Toolchain roots needed by non-interactive build tools.
 if [ "$(uname -s)" = Darwin ]; then
   export JAVA_HOME="$(/usr/libexec/java_home 2>/dev/null || printf '%s' '/opt/homebrew/opt/openjdk/libexec/openjdk.jdk/Contents/Home')"
