@@ -2,9 +2,13 @@
 # Keep this file fast and side-effect-free: env vars and PATH only.
 # Anything that defines shell functions, prints, or needs a TTY belongs in .zshrc.
 
-# Project secrets and editor preference.
-# envsubst expands $VAR references inside ~/.env before exporting.
-[ -r ~/.env ] && export $(envsubst < ~/.env)
+# Project secrets and editor preference. Export assignments while loading the
+# local file without depending on external commands during shell startup.
+if [ -r "$HOME/.env" ]; then
+  set -a
+  . "$HOME/.env"
+  set +a
+fi
 
 # Toolchain roots needed by non-interactive build tools.
 if [ "$(uname -s)" = Darwin ]; then

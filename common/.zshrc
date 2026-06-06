@@ -127,12 +127,6 @@ function y() {
 	rm -f -- "$tmp"
 }
 
-# Custom path addtions
-# Load .env file if it exists (requires envsubst which can be installed via 'brew install gettext')
-if [[ -f ~/.env && -s ~/.env ]]; then
-    export $(envsubst < ~/.env 2>/dev/null)
-fi
-
 # Android SDK - different paths on Linux vs macOS
 if [[ "$(uname -s)" == Darwin ]]; then
     export ANDROID_HOME="$HOME/Library/Android/sdk"
