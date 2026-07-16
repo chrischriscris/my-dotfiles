@@ -1,0 +1,63 @@
+{
+  "$schema": "https://vicinae.com/schemas/config.json",
+  "telemetry": {
+    "system_info": false
+  },
+  "input_server": {
+    "enabled": true
+  },
+  "search_files_in_root": false,
+  "activate_on_single_click": false,
+  "escape_key_behavior": "navigate_back",
+  "pop_on_backspace": true,
+  "close_on_focus_loss": true,
+  "pop_to_root_on_close": true,
+  "keybinding": "emacs",
+  "font": {
+    "rendering": "native",
+    "normal": {
+      "family": "JetBrains Mono Nerd Font",
+      "size": 10.5
+    }
+  },
+  "theme": {
+    "light": {
+      "name": "catppuccin-latte",
+      "icon_theme": "WhiteSur-dark"
+    },
+    "dark": {
+      "name": "catppuccin-mocha",
+      "icon_theme": "WhiteSur-dark"
+    }
+  },
+  "launcher_window": {
+    "opacity": 0.94,
+    "material": "blur",
+    "rounding": 18,
+    "client_side_decorations": {
+      "enabled": true,
+      "border_width": 1,
+      "shadow_size": 18
+    },
+    "compact_mode": {
+      "enabled": false
+    },
+    "size": {
+      "width": 780,
+      "height": 500
+    },
+    "screen": "auto",
+    "layer_shell": {
+      "enabled": true,
+      "keyboard_interactivity": "on_demand",
+      "layer": "top"
+    }
+  },
+  "favorites": [
+    "clipboard:history"
+  ],
+  "fallbacks": [
+    "files:search"
+  ],
+  "providers": {}
+}

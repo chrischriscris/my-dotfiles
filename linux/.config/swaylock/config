@@ -1,0 +1,20 @@
+color=1e1e2e
+font=JetBrains Mono Nerd Font
+font-size=20
+indicator-radius=90
+indicator-thickness=8
+inside-color=181825dd
+inside-clear-color=f9e2afdd
+inside-ver-color=89b4fadd
+inside-wrong-color=f38ba8dd
+key-hl-color=cba6f7ff
+ring-color=45475aff
+ring-clear-color=f9e2afff
+ring-ver-color=89b4faff
+ring-wrong-color=f38ba8ff
+separator-color=00000000
+text-color=cdd6f4ff
+text-clear-color=1e1e2eff
+text-ver-color=1e1e2eff
+text-wrong-color=1e1e2eff
+show-failed-attempts
