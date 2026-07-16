@@ -33,3 +33,5 @@ alias fm='free -m'
 # programs
 alias lvim="NVIM_APPNAME=lazyvim nvim"
 alias brew-syu='brew update && brew upgrade && brew upgrade --cask && brew cleanup'
+
+alias aws-mfa="source $HOME/bin/mfa-authenticate.sh"
