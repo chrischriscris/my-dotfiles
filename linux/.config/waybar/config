@@ -12,10 +12,7 @@
     "hyprland/workspaces": {
         "active-only": false,
         "all-outputs": false,
-        "format": "{name}",
-        "persistent-workspaces": {
-            "*": [1, 2, 3, 4, 5]
-        }
+        "format": "{name}"
     },
 
     "hyprland/window": {
