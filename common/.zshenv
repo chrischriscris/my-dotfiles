@@ -43,3 +43,11 @@ if [ -r "$NVM_DIR/alias/default" ]; then
 fi
 unset -f _zshenv_add_path
 export PATH
+
+# ASCII BOAT SHELL INTEGRATION START boat
+case ":$PATH:" in
+  *":/Users/chus/.ascii/bin:"*) ;;
+  *) PATH="/Users/chus/.ascii/bin:$PATH" ;;
+esac
+export PATH
+# ASCII BOAT SHELL INTEGRATION END boat

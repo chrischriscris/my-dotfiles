@@ -35,3 +35,6 @@ alias lvim="NVIM_APPNAME=lazyvim nvim"
 alias brew-syu='brew update && brew upgrade && brew upgrade --cask && brew cleanup'
 
 alias aws-mfa="source $HOME/bin/mfa-authenticate.sh"
+
+# pi — no plugins run: keeps models/auth/settings/sessions, skips extensions/skills/prompts/themes/project .pi
+alias piv='pi -ne -ns -np --no-themes -na'

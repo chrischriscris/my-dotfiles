@@ -1,3 +1,11 @@
+# ASCII BOAT SHELL INTEGRATION START boat
+case ":$PATH:" in
+  *":/Users/chus/.ascii/bin:"*) ;;
+  *) PATH="/Users/chus/.ascii/bin:$PATH" ;;
+esac
+export PATH
+# ASCII BOAT SHELL INTEGRATION END boat
+
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
@@ -102,6 +110,14 @@ function y() {
 	rm -f -- "$tmp"
 }
 
+# Wrap ~/bin/wt so the new worktree becomes the current directory. A script
+# alone cannot do this: it runs in a child process and can only cd itself.
+function wt() {
+	local dir
+	dir=$(command wt "$@") || return $?
+	builtin cd -- "$dir"
+}
+
 append_path "$HOME/.local/bin" # pipx executables
 append_path "$HOME/bin" # Custom scripts
 append_path "$ANDROID_HOME/emulator"
@@ -119,6 +135,8 @@ append_path "$HOME/go/bin"
 append_path "$HOME/.rvm/bin" # RVM, make sure this is the last PATH variable change.
 # Hyros config
 export H_DIR=$HOME/hyros-services
+# The MFA session written by aws-mfa; the base keys in the default profile are denied without MFA.
+export AWS_PROFILE=mfa
 
 # Interactive settings selected by the active Stow platform package.
 [[ -r "$HOME/.config/zsh/platform.zsh" ]] && \
@@ -142,3 +160,124 @@ export PATH="$HOME/.grok/bin:$PATH"
 fpath=(~/.grok/completions/zsh $fpath)
 autoload -Uz compinit && compinit -C
 # <<< grok installer <<<
+
+# === agent-worktree BEGIN ===
+# NOTE: Don't use 'path'/'status' as variable names - zsh reserves them
+wt() {
+  local wt_bin path_file target_path wt_status wt_arg path_file_inserted
+  local -a wt_args
+  if [[ -n "$ZSH_VERSION" ]]; then
+    wt_bin=$(whence -p wt 2>/dev/null)
+  else
+    wt_bin=$(type -P wt 2>/dev/null)
+  fi
+  if [[ -z "$wt_bin" ]]; then
+    echo "wt: binary not found. Install: npm install -g agent-worktree" >&2
+    return 1
+  fi
+  # Pass through if -h/--help anywhere in args
+  case " $* " in
+    *" -h "*|*" --help "*) "$wt_bin" "$@"; return ;;
+  esac
+  case "$1" in
+    cd|new|rm|mv|merge|clean|run)
+      # Use mktemp so concurrent calls (and subshells where $$ is the parent
+      # PID) get unique files; fall back to PID-based name if mktemp missing.
+      path_file=$(mktemp 2>/dev/null) || path_file="${TMPDIR:-/tmp}/wt-path-$$"
+      # `wt run -- <agent>` treats every argument after `--` as belonging to
+      # the agent, so inject the wrapper option before that delimiter.
+      wt_args=()
+      path_file_inserted=
+      for wt_arg in "$@"; do
+        if [[ "$wt_arg" == "--" && -z "$path_file_inserted" ]]; then
+          wt_args+=(--path-file "$path_file")
+          path_file_inserted=1
+        fi
+        wt_args+=("$wt_arg")
+      done
+      if [[ -z "$path_file_inserted" ]]; then
+        wt_args+=(--path-file "$path_file")
+      fi
+      "$wt_bin" "${wt_args[@]}"
+      wt_status=$?
+      # -s guards the empty file mktemp created: cd only on a written target
+      if [[ $wt_status -eq 0 && -s "$path_file" ]]; then
+        target_path=$(<"$path_file"); cd "$target_path"
+      fi
+      rm -f "$path_file"
+      return $wt_status
+      ;;
+    *)
+      "$wt_bin" "$@"
+      ;;
+  esac
+}
+# Dynamic completions: call binary directly to bypass wt function
+if [[ -n "$ZSH_VERSION" ]]; then
+  _wt_bin=$(whence -p wt 2>/dev/null)
+  [[ -n "$_wt_bin" ]] && source <(COMPLETE=zsh "$_wt_bin" 2>/dev/null) 2>/dev/null
+else
+  _wt_bin=$(type -P wt 2>/dev/null)
+  [[ -n "$_wt_bin" ]] && source <(COMPLETE=bash "$_wt_bin" 2>/dev/null) 2>/dev/null
+fi
+unset _wt_bin
+# === agent-worktree END ===
+
+autoload -U +X bashcompinit && bashcompinit
+complete -o nospace -C /opt/homebrew/bin/terraform terraform
+
+# bun completions
+[ -s "/tmp/bun14/_bun" ] && source "/tmp/bun14/_bun"
+
+# opencode
+export PATH=/Users/chus/.opencode/bin:$PATH
+
+# Xcode toolchain for xcrun/simctl (gym-nerds)
+export DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer
+
+# Added by Devin
+export PATH="/Users/chus/.codeium/windsurf/bin:$PATH"
+
+# MiniMax Code CLI
+export PATH="/Users/chus/.minimax-code/bin:$PATH"
+
+# Added by MiniMax Code
+export PATH="/Users/chus/.minimax/bin:$PATH"
+
+# mimocode
+export PATH=/Users/chus/.mimocode/bin:$PATH
+
+# ASCII BOAT SHELL INTEGRATION START boat
+boat() {
+  current_file=$(mktemp)
+  convo_file=$(mktemp)
+  old_current_file=${BOAT_CURRENT_ID_FILE-}
+  old_convo_file=${BOAT_CURRENT_CONVO_FILE-}
+  export BOAT_CURRENT_ID_FILE="$current_file"
+  export BOAT_CURRENT_CONVO_FILE="$convo_file"
+  command "/Users/chus/.ascii/bin/boat" "$@"
+  boat_status=$?
+  if [ "$boat_status" -eq 0 ]; then
+    case "${1:-}" in
+      new|start|fork)
+        if [ -s "$current_file" ]; then
+          current_id=$(tr -d '[:space:]' < "$current_file")
+          if [ -n "$current_id" ]; then export BOAT_CURRENT_ID="$current_id"; fi
+        fi
+        ;;
+    esac
+    case "${1:-}" in
+      prompt)
+        if [ -s "$convo_file" ]; then
+          IFS= read -r current_convo < "$convo_file" || current_convo=""
+          if [ -n "$current_convo" ]; then export BOAT_CURRENT_CONVO="$current_convo"; fi
+        fi
+        ;;
+    esac
+  fi
+  if [ -n "$old_current_file" ]; then export BOAT_CURRENT_ID_FILE="$old_current_file"; else unset BOAT_CURRENT_ID_FILE; fi
+  if [ -n "$old_convo_file" ]; then export BOAT_CURRENT_CONVO_FILE="$old_convo_file"; else unset BOAT_CURRENT_CONVO_FILE; fi
+  rm -f "$current_file" "$convo_file"
+  return "$boat_status"
+}
+# ASCII BOAT SHELL INTEGRATION END boat
