@@ -13,9 +13,12 @@ alias la='ls -A'
 alias l='ls -CF'
 
 # alias's to modified commands
-alias cp='cp -i'
-alias mv='mv -i'
-alias rm='rm -iv'
+# skipped in agent shells (Claude Code sets CLAUDECODE): -i prompts read EOF and silently refuse
+if [ -z "$CLAUDECODE" ]; then
+  alias cp='cp -i'
+  alias mv='mv -i'
+  alias rm='rm -iv'
+fi
 alias mkdir='mkdir -p'
 alias c='clear'
 alias n='nnn -A'
@@ -33,8 +36,6 @@ alias fm='free -m'
 # programs
 alias lvim="NVIM_APPNAME=lazyvim nvim"
 alias brew-syu='brew update && brew upgrade && brew upgrade --cask && brew cleanup'
-
-alias aws-mfa="source $HOME/bin/mfa-authenticate.sh"
 
 # pi — no plugins run: keeps models/auth/settings/sessions, skips extensions/skills/prompts/themes/project .pi
 alias piv='pi -ne -ns -np --no-themes -na'
