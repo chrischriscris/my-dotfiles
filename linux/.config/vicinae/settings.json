@@ -1,63 +1,71 @@
+// This configuration is merged with the default vicinae configuration file, which you can obtain by running the `vicinae config default` command.
+// Every item defined in this file takes precedence over the values defined in the default config or any other imported file.
+//
+// You can make manual edits to this file, however you should keep in mind that this file may be written to by vicinae when a configuration change is made through the GUI.
+// When that happens, any custom comments or formatting will be lost.
+//
+// If you want to maintain a configuration file with your own comments and formatting, you should create a separate file and add it to the 'imports' array.
+//
+// Learn more about configuration at https://docs.vicinae.com/config
+
 {
-  "$schema": "https://vicinae.com/schemas/config.json",
-  "telemetry": {
-    "system_info": false
-  },
-  "input_server": {
-    "enabled": true
-  },
-  "search_files_in_root": false,
-  "activate_on_single_click": false,
-  "escape_key_behavior": "navigate_back",
-  "pop_on_backspace": true,
-  "close_on_focus_loss": true,
-  "pop_to_root_on_close": true,
-  "keybinding": "emacs",
-  "font": {
-    "rendering": "native",
-    "normal": {
-      "family": "JetBrains Mono Nerd Font",
-      "size": 10.5
-    }
-  },
-  "theme": {
-    "light": {
-      "name": "catppuccin-latte",
-      "icon_theme": "WhiteSur-dark"
-    },
-    "dark": {
-      "name": "catppuccin-mocha",
-      "icon_theme": "WhiteSur-dark"
-    }
-  },
-  "launcher_window": {
-    "opacity": 0.94,
-    "material": "blur",
-    "rounding": 18,
-    "client_side_decorations": {
-      "enabled": true,
-      "border_width": 1,
-      "shadow_size": 18
-    },
-    "compact_mode": {
-      "enabled": false
-    },
-    "size": {
-      "width": 780,
-      "height": 500
-    },
-    "screen": "auto",
-    "layer_shell": {
-      "enabled": true,
-      "keyboard_interactivity": "on_demand",
-      "layer": "top"
-    }
-  },
-  "favorites": [
-    "clipboard:history"
-  ],
-  "fallbacks": [
-    "files:search"
-  ],
-  "providers": {}
+   "$schema": "https://vicinae.com/schemas/config.json",
+   "close_on_focus_loss": true,
+   "pop_to_root_on_close": true,
+   "pop_on_backspace": true,
+   "activate_on_single_click": false,
+   "escape_key_behavior": "navigate_back",
+   "keybinding": "emacs",
+   "search_files_in_root": false,
+   "input_server": {
+      "enabled": true
+   },
+   "font": {
+      "rendering": "native",
+      "normal": {
+         "family": "JetBrains Mono Nerd Font",
+         "size": 10.5
+      }
+   },
+   "theme": {
+      "light": {
+         "name": "catppuccin-latte",
+         "icon_theme": "WhiteSur-dark"
+      },
+      "dark": {
+         "name": "catppuccin-mocha",
+         "icon_theme": "WhiteSur-dark"
+      }
+   },
+   "telemetry": {
+      "system_info": false
+   },
+   "launcher_window": {
+      "rounding": 18,
+      "opacity": 0.94,
+      "client_side_decorations": {
+         "enabled": true,
+         "border_width": 1,
+         "shadow_size": 18
+      },
+      "size": {
+         "width": 780,
+         "height": 500
+      },
+      "compact_mode": {
+         "enabled": false
+      },
+      "layer_shell": {
+         "layer": "top",
+         "keyboard_interactivity": "on_demand",
+         "enabled": true
+      },
+      "material": "blur"
+   },
+   "favorites": [
+      "clipboard:history"
+   ],
+   "fallbacks": [
+      "files:search"
+   ]
 }
