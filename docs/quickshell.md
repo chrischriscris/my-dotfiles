@@ -25,7 +25,7 @@ Restore overwrites only the Hyprland configuration and wallpaper script changed 
 
 ## AI usage widget
 
-The bar shows Claude and Codex quota from the [CodexBar](https://github.com/steipete/CodexBar) CLI (`AiUsage.qml`, `AiUsagePopup.qml`). Each provider's number is the quota left in its tightest window. Click it for a popup laid out like CodexBar's macOS menu: per-window bars with pace, local spend, and dashboard/status links. Middle-click refreshes; it also polls every five minutes.
+The bar shows Claude and Codex quota from the [CodexBar](https://github.com/steipete/CodexBar) CLI (`AiUsage.qml`, `AiUsagePopup.qml`). Like CodexBar's macOS menu bar, it shows one provider: the selected popup tab, or the first provider on Overview. The selection persists in the ignored `ai-usage-state.json`. The number is the quota left in that provider's tightest window. Click it for a popup laid out like CodexBar's macOS menu: per-window bars with pace, local spend, and dashboard/status links. Middle-click refreshes; it also polls every five minutes.
 
 Install the CLI where the widget expects it, outside `PATH` so it never collides with another `codexbar`. Rerun to upgrade:
 

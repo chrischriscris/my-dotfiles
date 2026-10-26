@@ -14,7 +14,7 @@ PopUp {
     property int refreshInterval: 5 * 60 * 1000
 
     property var providers: []
-    property string selectedTab: "overview"
+    property alias selectedTab: savedState.selectedTab
     property string fetchError: ""
     property string fetchStderr: ""
     property var lastUpdated: null
@@ -300,6 +300,19 @@ PopUp {
                 root.costEntries = entries
                 root.rebuild()
             }
+        }
+    }
+
+    // Remembers the selected tab across restarts, as the macOS app does.
+    FileView {
+        path: Qt.resolvedUrl("ai-usage-state.json")
+        printErrors: false
+        blockLoading: true
+        onAdapterUpdated: writeAdapter()
+
+        JsonAdapter {
+            id: savedState
+            property string selectedTab: "overview"
         }
     }
 
