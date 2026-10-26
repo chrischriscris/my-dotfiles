@@ -1,0 +1,6 @@
+[Unit]
+Description=Change wallpaper randomly (Wayland)
+
+[Service]
+Type=oneshot
+ExecStart=%h/bin/bgchange_wayland
