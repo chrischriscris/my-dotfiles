@@ -23,6 +23,28 @@ bash '/mnt/hdd/Downloads/Telegram Desktop/desktop-backup-2026-09-30/restore.sh'
 
 Restore overwrites only the Hyprland configuration and wallpaper script changed by this adaptation, stops this Quickshell configuration, reloads Hyprland, and restarts Waybar/SwayNC. It leaves Quickshell files and packages available. Keep the backup directory for future restoration; config snapshots include symlinks to their original repository paths, while the `dotfiles` snapshot contains the actual saved files.
 
+## AI usage widget
+
+The bar shows Claude and Codex quota from the [CodexBar](https://github.com/steipete/CodexBar) CLI (`AiUsage.qml`, `AiUsagePopup.qml`). Each provider's number is the quota left in its tightest window. Click it for a popup laid out like CodexBar's macOS menu: per-window bars with pace, local spend, and dashboard/status links. Middle-click refreshes; it also polls every five minutes.
+
+Install the CLI where the widget expects it, outside `PATH` so it never collides with another `codexbar`. Rerun to upgrade:
+
+```sh
+(
+set -eu
+work=$(mktemp -d)
+trap 'rm -rf "$work"' EXIT
+cd "$work"
+gh release download --repo steipete/CodexBar --pattern "CodexBarCLI-*-linux-$(uname -m).tar.gz*"
+sha256sum -c CodexBarCLI-*.sha256
+mkdir -p ~/.local/lib/codexbar-cli
+tar -xzf CodexBarCLI-*.tar.gz -C ~/.local/lib/codexbar-cli
+~/.local/lib/codexbar-cli/codexbar --version
+)
+```
+
+The CLI reuses the Claude Code and Codex logins. Spend is estimated from this machine's local logs only. Without the CLI the bar shows a red `AI !`. To track other providers, set `provider` in `AiUsagePopup.qml` to any `codexbar --provider` value.
+
 ## Validation
 
 Check workspace clicks, tray, calendar, notification actions/dismissal, volume/brightness, dock app launches, and popup dismissal. Confirm Alt+D, window shortcuts, locking, and suspend/resume. At the next login, confirm there is one bar and one notification server. Test additional monitors when connected.

@@ -11,6 +11,7 @@ PanelWindow {
     }
 
     function checkClick() {
+        aiUsage.checkClick()
         tray.checkClick()
         systemIcon.checkClick()
         clock.checkClick()
@@ -61,6 +62,7 @@ PanelWindow {
 
         RowLayout {
             spacing: 16
+            AiUsage { id: aiUsage; barWindow: bar }
             Tray { id: tray; barWindow: bar }
             Battery { id: battery; barWindow: bar }
             Volume { id: volume; barWindow: bar }
