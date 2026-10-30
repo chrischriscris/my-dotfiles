@@ -4,7 +4,7 @@ Extracted from the frontend bundle (`main.2776d50b.js`, Aug 2026). Swagger is no
 exposed (`/v3/api-docs` → 500), so this was mined from the SPA's service classes.
 
 - **Base URL:** `https://ops-api.ensolvers.com`
-- **Auth:** `Authorization: Bearer <token>` (grab from browser DevTools; format `xxx:yyy`)
+- **Auth:** `Authorization: Bearer <token>` (format `xxx:yyy`; the web app keeps it in localStorage key `t`, which opslib reads from Zen)
 - **Headers the app sends:** `Origin: https://ops.ensolvers.com`, `Referer: https://ops.ensolvers.com/`
 - **Response envelope:** `{"message": "...", "success": true, "content": <payload>}`
 - **Paginated content:** `{"totalElements", "totalPages", "first", "last", "size", "content": [...]}`

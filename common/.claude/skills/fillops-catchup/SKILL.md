@@ -11,11 +11,9 @@ Fill missing weekday worklog entries up to and including today. Tools: `fillops`
 - User externalId: `f095d54bd78946789199855d9e9256ef`
 - Assignation: `a79568e05bfa452da8e12b789a1031ee` ("699 - Hyros - Architect"). If the user id
   stops working: `opslib assignation get <assignation>` → `content.userExternalId`.
-- Auth is a baked-in yearly token in both scripts. On `HTTP 401 … token may have expired`, ask
-  the user for a fresh `Authorization: Bearer xxx:yyy` (DevTools on ops.ensolvers.com) and write
-  it into the `TOKEN = os.environ.get("OPS_TOKEN", …)` fallback of both
-  `~/.dotfiles/common/bin/opslib` and `~/.dotfiles/common/bin/fillops`, noting the date. Never
-  `git add` those files.
+- Auth: both scripts read the token from the user's ops.ensolvers.com session in Zen on every
+  run (`OPS_TOKEN` overrides it). On a 401 or "no Ops session found", ask the user to log in
+  again at ops.ensolvers.com in Zen, then retry.
 
 **Scope.** `$ARGUMENTS` may give a start date (`YYYY-MM-DD`) or month (`YYYY-MM`). Default: 1st of
 the current month through today; if the 1st is under 7 days ago, start 7 days earlier.
