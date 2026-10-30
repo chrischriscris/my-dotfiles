@@ -155,11 +155,7 @@ sdk() {
     fi
 }
 
-# >>> grok installer >>>
-export PATH="$HOME/.grok/bin:$PATH"
-fpath=(~/.grok/completions/zsh $fpath)
 autoload -Uz compinit && compinit -C
-# <<< grok installer <<<
 
 # === agent-worktree BEGIN ===
 # NOTE: Don't use 'path'/'status' as variable names - zsh reserves them
@@ -234,18 +230,6 @@ export PATH=/Users/chus/.opencode/bin:$PATH
 
 # Xcode toolchain for xcrun/simctl (gym-nerds)
 export DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer
-
-# Added by Devin
-export PATH="/Users/chus/.codeium/windsurf/bin:$PATH"
-
-# MiniMax Code CLI
-export PATH="/Users/chus/.minimax-code/bin:$PATH"
-
-# Added by MiniMax Code
-export PATH="/Users/chus/.minimax/bin:$PATH"
-
-# mimocode
-export PATH=/Users/chus/.mimocode/bin:$PATH
 
 # ASCII BOAT SHELL INTEGRATION START boat
 boat() {
