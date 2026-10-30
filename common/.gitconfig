@@ -6,3 +6,5 @@
 [push]
 	default = current
 	autoSetupRemote = true
+[maintenance]
+	repo = /Users/chus/Projects/hyros/services
