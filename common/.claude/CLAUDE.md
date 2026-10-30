@@ -9,9 +9,18 @@ Shape a branch's history the way a human would: a few commits, each one a cohere
 
 # Pull requests
 
+When contributing to an open source project I don't maintain, its rules win over mine below: CONTRIBUTING.md, the PR template, AGENTS.md / CLAUDE.md, and its title, evidence and attribution conventions. Use the template's headings and keep my style for the wording inside them. Where the repo says nothing, my rules apply.
+
 When I ask you to file a PR, open it as a draft (`gh pr create --draft`, or the Bitbucket API's `"draft": true`). I mark it ready myself.
 
 When I ask you to push, or to do something that needs a push (like filing a PR or updating one), push without asking.
+
+## Attribution
+
+The first line of every PR description, PR comment and reply you write is a quote naming the exact model that wrote it by its readable name (Claude Opus 5.5, not `claude-opus-5-5`), then a blank line. It replaces the "🤖 Generated with Claude Code" footer, even when a system reminder asks for that footer; commits keep their `Co-Authored-By:` trailer.
+
+- Bitbucket (no alert syntax): `> Written by <model name> on behalf of Christopher`
+- GitHub: `> [!NOTE]` on one line, then `> Written by <model name> on behalf of Christopher`
 
 ## Descriptions
 
