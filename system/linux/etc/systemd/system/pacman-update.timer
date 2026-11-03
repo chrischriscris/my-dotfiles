@@ -1,0 +1,11 @@
+[Unit]
+Description=Run pacman-update weekly (Saturdays)
+
+[Timer]
+# Run every Saturday at 10am
+OnCalendar=Sat 10:00
+# Ensures if the system was off at that time, it runs ASAP after boot
+Persistent=true
+
+[Install]
+WantedBy=timers.target

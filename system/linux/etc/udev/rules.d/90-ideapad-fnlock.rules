@@ -1,0 +1,2 @@
+# Hotkeys first on F1-F12 (FnLock off); hold Fn for plain F-keys. Fn+Esc still toggles.
+ACTION=="bind", SUBSYSTEM=="platform", DRIVER=="ideapad_acpi", ATTR{fn_lock}="0"

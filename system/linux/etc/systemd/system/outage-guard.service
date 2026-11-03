@@ -1,0 +1,11 @@
+[Unit]
+Description=Suspend through power outages and wake when AC returns (lid-closed server)
+After=multi-user.target
+
+[Service]
+ExecStart=/usr/local/bin/outage-guard
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target

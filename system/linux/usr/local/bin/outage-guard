@@ -1,0 +1,102 @@
+#!/bin/bash
+# outage-guard: keep a lid-closed laptop server alive through power outages.
+#
+# On battery with the lid closed it stays awake while the battery is above
+# MIN_PERCENT and the internet is reachable. Otherwise it suspends with an RTC
+# alarm, wakes every WAKE_MINUTES to check for AC, and goes back to sleep until
+# power returns. Below CRITICAL_PERCENT it shuts down cleanly instead.
+# With the lid open (someone is using it) or on AC it does nothing.
+#
+# Charge limit: the IdeaPad driver only offers conservation mode (fixed ~60% cap),
+# so we emulate CHARGE_LIMIT by turning conservation on at the limit and off again
+# CHARGE_HYSTERESIS points below it. CHARGE_LIMIT=100 means always charge to full.
+
+MIN_PERCENT=${MIN_PERCENT:-50}
+CRITICAL_PERCENT=${CRITICAL_PERCENT:-8}
+WAKE_MINUTES=${WAKE_MINUTES:-10}
+OFFLINE_CHECKS=${OFFLINE_CHECKS:-6}      # consecutive failed checks (x INTERVAL) before "offline"
+INTERVAL=${INTERVAL:-30}
+PROBE_HOST=${PROBE_HOST:-198.41.192.227} # Cloudflare tunnel edge, same path T3 Connect uses
+PROBE_PORT=${PROBE_PORT:-7844}
+CHARGE_LIMIT=${CHARGE_LIMIT:-80}
+CHARGE_HYSTERESIS=${CHARGE_HYSTERESIS:-5}
+DRY_RUN=${DRY_RUN:-0}
+
+AC=${AC_PATH:-/sys/class/power_supply/ADP0/online}
+BAT=${BAT_PATH:-/sys/class/power_supply/BAT0/capacity}
+LID=${LID_PATH:-/proc/acpi/button/lid/LID0/state}
+RTC=/sys/class/rtc/rtc0/wakealarm
+CONSERVATION=${CONSERVATION_PATH:-/sys/bus/platform/drivers/ideapad_acpi/VPC2004:00/conservation_mode}
+
+log() { echo "outage-guard: $*"; }
+
+online() { timeout 5 bash -c "echo > /dev/tcp/$PROBE_HOST/$PROBE_PORT" 2>/dev/null; }
+
+act() {
+  if [ "$DRY_RUN" = 1 ]; then log "DRY RUN: would $*"; return; fi
+  case $1 in
+    suspend)
+      echo 0 > "$RTC"
+      echo "+$((WAKE_MINUTES * 60))" > "$RTC"
+      systemctl suspend || log "suspend FAILED (see journalctl -u systemd-logind), still awake" ;;
+    poweroff)
+      systemctl poweroff || log "poweroff FAILED" ;;
+  esac
+}
+
+charge_limit() {
+  local want cur
+  cur=$(cat "$CONSERVATION" 2>/dev/null) || return
+  if [ "$CHARGE_LIMIT" -ge 100 ]; then want=0
+  elif [ "$cap" -ge "$CHARGE_LIMIT" ]; then want=1
+  elif [ "$cap" -le $((CHARGE_LIMIT - CHARGE_HYSTERESIS)) ]; then want=0
+  else return
+  fi
+  [ "$want" = "$cur" ] && return
+  log "battery $cap%, charge limit $CHARGE_LIMIT%: $([ "$want" = 1 ] && echo "stop charging" || echo "resume charging")"
+  [ "$DRY_RUN" = 1 ] || echo "$want" > "$CONSERVATION"
+}
+
+outage=0   # set once we have suspended for this outage; cleared when AC or the lid comes back
+offline=0
+
+while true; do
+  ac=$(cat "$AC"); cap=$(cat "$BAT"); lid=$(awk '{print $2}' "$LID")
+  charge_limit
+
+  if [ "$ac" = 1 ] || [ "$lid" = open ]; then
+    [ "$outage" = 1 ] && log "power or lid back (ac=$ac lid=$lid battery=$cap%), staying awake"
+    outage=0; offline=0
+    [ "$DRY_RUN" = 1 ] && log "ac=$ac lid=$lid battery=$cap%: nothing to do" && exit 0
+    sleep "$INTERVAL"; continue
+  fi
+
+  if [ "$cap" -le "$CRITICAL_PERCENT" ]; then
+    log "battery critical ($cap%), shutting down cleanly"
+    act poweroff; sleep 60; continue
+  fi
+
+  if [ "$outage" = 1 ]; then
+    # Woken by the RTC alarm (or anything else) and still no AC: back to sleep.
+    log "still on battery ($cap%), sleeping another $WAKE_MINUTES min"
+    sleep 15   # let the resume settle and give AC detection a moment
+    [ "$(cat "$AC")" = 1 ] && continue
+    act suspend; sleep "$INTERVAL"; continue
+  fi
+
+  if online; then offline=0; else offline=$((offline + 1)); fi
+
+  reason=""
+  [ "$cap" -lt "$MIN_PERCENT" ] && reason="battery $cap% < $MIN_PERCENT%"
+  [ "$offline" -ge "$OFFLINE_CHECKS" ] && reason="internet unreachable for $((offline * INTERVAL))s"
+
+  if [ -n "$reason" ]; then
+    log "on battery, lid closed, $reason: suspending, waking every $WAKE_MINUTES min to check for power"
+    outage=1
+    act suspend
+  elif [ "$DRY_RUN" = 1 ]; then
+    log "on battery, lid closed, battery=$cap% offline_checks=$offline: staying awake"
+    exit 0
+  fi
+  sleep "$INTERVAL"
+done

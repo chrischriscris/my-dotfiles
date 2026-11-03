@@ -1,0 +1,2 @@
+# Allow the active local user to access the ELAN 04f3:0c57 fingerprint reader.
+ACTION=="add|change", SUBSYSTEM=="usb", ENV{DEVTYPE}=="usb_device", ATTR{idVendor}=="04f3", ATTR{idProduct}=="0c57", MODE="0660", TAG+="uaccess"

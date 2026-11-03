@@ -1,0 +1,7 @@
+[Unit]
+Description=Route Cloudflare Tunnel edge (T3 Connect) outside the VPN
+After=network-pre.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/t3connect-bypass

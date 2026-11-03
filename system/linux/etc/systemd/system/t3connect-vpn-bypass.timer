@@ -1,0 +1,10 @@
+[Unit]
+Description=Keep the T3 Connect VPN bypass rule ahead of VPN rules
+
+[Timer]
+OnBootSec=5s
+OnUnitActiveSec=30s
+AccuracySec=5s
+
+[Install]
+WantedBy=timers.target

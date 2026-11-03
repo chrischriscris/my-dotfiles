@@ -1,0 +1,7 @@
+#!/bin/sh
+# Used by /etc/pam.d/gdm-fingerprint. Fingerprint login can't unlock the
+# fscrypt-encrypted home (that needs the password), so refuse it while the
+# home is still locked; GDM then just uses the password prompt.
+# When locked, filenames are encrypted, so ~/.config isn't visible.
+home=$(getent passwd "$PAM_USER" | cut -d: -f6)
+[ -n "$home" ] && [ -d "$home/.config" ]

@@ -1,0 +1,2 @@
+# Let wheel write the backlight directly (smooth brightness glide without logind round-trips).
+ACTION=="add", SUBSYSTEM=="backlight", RUN+="/usr/bin/chgrp wheel /sys/class/backlight/%k/brightness", RUN+="/usr/bin/chmod g+w /sys/class/backlight/%k/brightness"

@@ -1,0 +1,21 @@
+#!/bin/bash
+# Keep T3 Connect's Cloudflare tunnel edge routed outside the VPN.
+#
+# VPNs (wg-quick, NetworkManager) add their policy rules without a fixed
+# priority, which the kernel places just ahead of the lowest existing rule, so
+# a bypass rule with a fixed priority loses whenever the VPN comes up after it.
+# Instead, make sure the bypass is the first rule after "local" and re-add it
+# in front whenever it isn't. Run from a timer, so the VPN starting or
+# restarting in any order is corrected within seconds.
+
+ensure() {
+  local fam=$1 net=$2 first
+  first=$(ip "$fam" rule show | awk -F'\t' '$1 != "0:" { print $2; exit }')
+  [ "$first" = "from all to $net lookup main" ] && return
+  while ip "$fam" rule del to "$net" lookup main 2>/dev/null; do :; done
+  ip "$fam" rule add to "$net" lookup main
+  echo "t3connect-bypass: moved $net bypass ahead of: ${first:-nothing}"
+}
+
+ensure -4 198.41.192.0/19
+ensure -6 2606:4700:a0::/44

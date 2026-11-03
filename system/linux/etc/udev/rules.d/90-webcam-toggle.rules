@@ -1,0 +1,2 @@
+# Built-in camera (Bison 5986:2130): let wheel (de)authorize it for the Fn+F8 camera toggle.
+ACTION=="add", SUBSYSTEM=="usb", ENV{DEVTYPE}=="usb_device", ATTR{idVendor}=="5986", ATTR{idProduct}=="2130", RUN+="/usr/bin/chgrp wheel /sys%p/authorized", RUN+="/usr/bin/chmod g+w /sys%p/authorized"
