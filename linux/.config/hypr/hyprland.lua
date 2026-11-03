@@ -160,8 +160,6 @@ hl.on("hyprland.start", function()
     hl.exec_cmd("~/bin/battery-monitor-launcher")
     -- The IdeaPad EC's hotkey interrupt never arrives; poll it so Fn keys are delivered.
     hl.exec_cmd("~/bin/laptop-hotkey ec-poll")
-    -- Always-on server: bring T3 Code (and T3 Connect) back after a reboot.
-    hl.exec_cmd("/opt/t3code-nightly-bin/t3code")
 end)
 
 ------------------
