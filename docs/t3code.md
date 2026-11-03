@@ -11,11 +11,6 @@ T3 Code runs headless as the `t3code.service` user service, reached remotely thr
 
 ## New machine
 
-After `./install`:
-
-```sh
-sudo ~/.local/share/t3code-update/install-system.sh   # builder user, root service, polkit rule; enables the timer
-t3 up                                                 # install the server service and choose remote access
-```
+Section 6 of [`setup/linux.md`](../setup/linux.md) covers it: the root half (the `t3code-build` user, `t3code-update.service`, the polkit rule) lives in `system/linux/`, and `t3 up` installs the server.
 
 The root service builds the package as the unprivileged `t3code-build` user, so nothing your account (or an agent running as you) can write reaches `pacman -U`. The polkit rule only lets `chus` start that one service.

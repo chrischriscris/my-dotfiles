@@ -9,6 +9,9 @@ git clone --recurse-submodules git@github.com:chrischriscris/my-dotfiles.git ~/.
 ~/.dotfiles/install
 ```
 
+To set up a whole Linux machine (packages, system files under `system/`,
+services), have an agent follow [`setup/linux.md`](setup/linux.md).
+
 The installer detects the operating system and installs two stable Stow
 packages:
 
