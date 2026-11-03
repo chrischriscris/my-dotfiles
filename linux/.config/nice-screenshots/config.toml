@@ -1,0 +1,4 @@
+# nice-screenshots settings; see ~/Projects/nice-screenshots/README.md for every option.
+
+# The Quickshell bar shows a stop button while recording, like the macOS menu bar.
+recording_pill = false
