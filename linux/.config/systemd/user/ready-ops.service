@@ -1,0 +1,6 @@
+[Unit]
+Description=Open Ensolvers Ops timely
+
+[Service]
+Type=oneshot
+ExecStart=%h/bin/ready-ops
