@@ -57,6 +57,7 @@ PanelWindow {
 
         RowLayout {
             spacing: 16
+            ScreenRecording {}
             AiUsage { id: aiUsage; barWindow: bar }
             Tray { id: tray; barWindow: bar }
             Battery { id: battery; barWindow: bar }
