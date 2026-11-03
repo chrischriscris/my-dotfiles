@@ -75,19 +75,13 @@
         "tooltip": true,
         "format": "{icon}",
         "format-icons": {
-            "notification": "󱅫",
             "none": "󰂜",
-            "dnd-notification": "󰂠",
-            "dnd-none": "󰪓",
-            "inhibited-notification": "󰂛",
-            "inhibited-none": "󰪑",
-            "dnd-inhibited-notification": "󰂛",
-            "dnd-inhibited-none": "󰪑"
+            "dnd": "󰪓"
         },
         "return-type": "json",
-        "exec": "swaync-client -swb",
-        "on-click": "swaync-client -t -sw",
-        "on-click-right": "swaync-client -d -sw",
+        "exec": "hokum dnd --json --watch | jq --unbuffered -c 'if .dnd then {alt: \"dnd\", tooltip: \"Do not disturb\"} else {alt: \"none\", tooltip: \"Notifications on\"} end'",
+        "on-click": "hokum",
+        "on-click-right": "hokum dnd toggle",
         "escape": true
     },
 

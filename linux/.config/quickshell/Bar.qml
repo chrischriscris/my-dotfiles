@@ -6,10 +6,6 @@ import Quickshell.Io
 PanelWindow {
     id: bar
 
-    function toggleNotifications(): void {
-        notifications.togglePopup()
-    }
-
     function checkClick() {
         aiUsage.checkClick()
         tray.checkClick()
@@ -17,7 +13,6 @@ PanelWindow {
         clock.checkClick()
         volume.checkClick()
         battery.checkClick()
-        notifications.checkClick()
     }
     anchors {
         top: true
@@ -66,7 +61,6 @@ PanelWindow {
             Tray { id: tray; barWindow: bar }
             Battery { id: battery; barWindow: bar }
             Volume { id: volume; barWindow: bar }
-            Notifications { id: notifications; barWindow: bar }
             Clock { id: clock; barWindow: bar }
         }
 

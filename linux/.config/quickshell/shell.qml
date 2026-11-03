@@ -12,13 +12,9 @@ ShellRoot {
         function checkClick(): void {
             bar.checkClick()
         }
-        function toggleNotifications(): void {
-            bar.toggleNotifications()
-        }
     }
 
     Bar { id: bar }
     BottomCorners {}
     Dock {}
-    NotificationToast {}
 }
