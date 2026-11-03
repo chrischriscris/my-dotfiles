@@ -6,7 +6,10 @@ Bring an Arch Linux machine to the state these dotfiles assume. A person may fol
 
 - **Inspect, then act.** For every section, first check whether it applies (the **Applies** line) and whether it is already done (the **Check** commands). Skip what is done; say what you skipped and why.
 - **Adapt to the hardware.** The files under `system/linux/` come from one Lenovo IdeaPad. Device IDs, sysfs paths and the username (`chus`) may differ; find the real values on this machine and edit a copy, never the repo file, unless the change belongs in the repo for every machine.
-- **Ask before root.** Anything that writes outside `$HOME` (copies into `/etc` or `/usr/local`, enabling system units, PAM) runs as root: show the user the exact files and their diff against what is installed, and wait for an OK. Batch these asks per section rather than per file.
+- **What the user says beats guessing, and conflicts get asked.** If the user's description of the machine (desktop, server, runs the bot) disagrees with what you detect, don't pick one: say what you found and ask.
+- **Ask before root.** Anything that needs root runs only after the user says OK. That includes package installs (`pacman`, and `paru`, which calls sudo), copies into `/etc` or `/usr/local`, enabling system units, and PAM. Show the exact packages or files, with a diff against what is installed. Batch the asks per section rather than per file.
+- **Stage adapted copies.** Put every system file you install, adapted or not, under `~/.setup-staging/system-linux/<target path>`, and install from there. The user then reviews a single tree, and the repo stays untouched.
+- **Don't guess safety behavior.** If a script that can suspend, shut down or lock the machine (like `outage-guard`) can't find a path it needs, ask; don't make it assume a default.
 - **PAM can lock the user out.** Before touching `/etc/pam.d`, make sure a root shell stays open, and test login in a second session before closing it.
 - **Verify, then report.** Run each section's **Check** after acting. Finish with a short report: done, skipped (and why), and anything that needs the user (logins, pairing, a reboot).
 
@@ -26,7 +29,7 @@ Repo paths below are relative to the repo root (usually `~/.dotfiles`). `system/
 
 **Applies:** always.
 
-Install what the configs call. The quickest way to find gaps: every command in the `hl.on("hyprland.start", …)` block and the `hl.dsp.exec_cmd(…)` binds of `linux/.config/hypr/hyprland.lua`, plus the scripts in `common/bin` (`jq`, `sqlite3`, `pactl`, `notify-send`, `brightnessctl`, `rfkill`). Core set: `hyprland` (0.57 or newer: the config is Lua), `hypridle`, `swaylock`, `quickshell`, `kitty`, `vicinae`, `hokum`, `wlsunset`, `ibus`, `polkit-gnome`, `keyd`, `stow`, `github-cli`. Use `paru` for AUR packages.
+Install what the configs call. This needs root, so ask first (see "How to work") with the full package list. The quickest way to find gaps: every command in the `hl.on("hyprland.start", …)` block and the `hl.dsp.exec_cmd(…)` binds of `linux/.config/hypr/hyprland.lua`, plus the scripts in `common/bin` (`jq`, `sqlite3`, `pactl`, `notify-send`, `brightnessctl`, `rfkill`). Core set: `hyprland` (0.57 or newer: the config is Lua), `hypridle`, `swaylock`, `quickshell`, `kitty`, `vicinae`, `hokum`, `wlsunset`, `ibus`, `polkit-gnome`, `keyd`, `stow`, `github-cli`. Use `paru` for AUR packages; hokum's AUR package is `hokum-bin`. `nice-screenshots` (the Print binds) isn't packaged: it's the owner's own Rust project, `git@github.com:chrischriscris/nice-screenshots.git`. Build it with `cargo install --path .` (the binds call `~/.local/bin/nice-screenshots`) or ask the user for a binary.
 
 **Check:** `command -v` succeeds for each autostart command; `Hyprland --verify-config` prints `config ok`.
 
@@ -34,10 +37,11 @@ Install what the configs call. The quickest way to find gaps: every command in t
 
 **Applies:** a machine with a desktop session.
 
-- **XDG folders** (`~/.config/user-dirs.dirs`) are per machine and not in the repo. If there is a separate data drive (this machine uses `/mnt/hdd`), point Downloads, Documents, Music, Pictures and Videos there, and add `XDG_PROJECTS_DIR="$HOME/Projects"`. Then write `enabled=False` to `~/.config/user-dirs.conf`. Otherwise `xdg-user-dirs-update` runs at login, and if the drive hasn't mounted yet (it's `nofail` in fstab), it resets every folder to `$HOME/`.
+- **XDG folders** (`~/.config/user-dirs.dirs`) are per machine and not in the repo. Only if this machine has a separate data drive that is mounted and listed in `/etc/fstab` (check `findmnt`), point Downloads, Documents, Music, Pictures and Videos there; the original machine uses `/mnt/hdd`. Otherwise keep the defaults under `$HOME`. Either way, add `XDG_PROJECTS_DIR="$HOME/Projects"`. Then write `enabled=False` to `~/.config/user-dirs.conf`. Otherwise `xdg-user-dirs-update` runs at login, and if the drive hasn't mounted yet (it's `nofail` in fstab), it resets every folder to `$HOME/`.
 - **Default browser:** `xdg-settings set default-web-browser zen.desktop`.
 - **Notifications:** hokum is the notification server; `systemctl --user enable hokum.service`. Its theme is `theme "pill"` in `~/.config/hokum/config.kdl` (hokum's settings window owns that file, so it is not stowed).
-- **AI usage widget:** install the CodexBar CLI as described in `docs/quickshell.md`.
+- **AI usage widget:** install the CodexBar CLI as described in `docs/quickshell.md`. It shows quota only after the Claude Code, Codex and OpenCode logins exist on the machine.
+- **Wallpapers:** `bgchange_wayland` picks from `/mnt/hdd/Pictures/wallpapers` and uses `~/.wallpapers/gold-watch.jpg` at login. Neither is in the repo; if they're missing, tell the user where to put images, and don't make any up.
 
 **Check:** `xdg-user-dir DOWNLOAD` shows the intended folder; `xdg-settings get default-web-browser` prints `zen.desktop`.
 
@@ -79,7 +83,7 @@ Install, then run `sudo systemctl enable --now keyd`, `sudo keyd reload`, `sudo 
 
 1. Install `t3code-nightly-bin` from the AUR. It provides the `t3` CLI.
 2. The user runs `t3 up` in a terminal and picks remote access (T3 Connect is the usual choice). It installs and starts `t3code.service`, a user service. It restarts any running T3 server, so don't run it from inside a T3 Code session.
-3. **Auto-updater:** `docs/t3code.md` explains how it works.
+3. **Auto-updater** (root): `docs/t3code.md` explains how it works.
    - Install these four files:
      - `etc/sysusers.d/t3code-build.conf`, then run `systemd-sysusers`.
      - `usr/local/lib/t3code-update/install-latest` (mode 755).
@@ -92,7 +96,7 @@ Install, then run `sudo systemctl enable --now keyd`, `sudo keyd reload`, `sudo 
 **Check:**
 - `t3 status` shows the service installed.
 - `systemctl --user is-active t3code.service` and `systemctl --user is-enabled t3code-autoupdate.timer`.
-- `t3code-update --when-idle` finishes with either "deferred" or an up-to-date message.
+- Only once the root half is installed: `t3code-update --when-idle` finishes with either "deferred" or an up-to-date message. Before that, it fails with "Access denied", which is expected and isn't a guide failure.
 
 ## 7. User services
 
