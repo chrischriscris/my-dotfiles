@@ -21,10 +21,14 @@ Item {
             }
             if (idx === -1) return;
 
+            // activate() sends the legacy `workspace N` dispatch, which Hyprland 0.57 rejects.
+            let target = null;
             if (wheel.angleDelta.y > 0 && idx > 0)
-                ws[idx - 1].activate();
+                target = ws[idx - 1];
             else if (wheel.angleDelta.y < 0 && idx < ws.length - 1)
-                ws[idx + 1].activate();
+                target = ws[idx + 1];
+            if (target)
+                Hyprland.dispatch("hl.dsp.focus({ workspace = " + target.id + " })");
         }
     }
 
@@ -55,6 +59,15 @@ Item {
                         duration: 200
                         easing.type: Easing.InOutQuad
                     }
+                }
+
+                Text {
+                    anchors.centerIn: parent
+                    // Special workspaces (scratchpad) have negative ids.
+                    text: model.id > 0 ? model.id : "S"
+                    color: model.active ? "#fff" : model.toplevels.values.length ? "#E8B4C6" : "#888"
+                    font.pixelSize: 11
+                    font.weight: Font.DemiBold
                 }
 
                 MouseArea {
