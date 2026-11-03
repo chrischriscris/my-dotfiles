@@ -29,7 +29,7 @@ PopUp {
         Repeater {
             model: [
                 { label: "Lock",     icon: "system-lock-screen", command: "loginctl lock-session", immediateClose: true },
-                { label: "Logout",   icon: "system-log-out",     command: "hyprctl dispatch exit", immediateClose: false },
+                { label: "Logout",   icon: "system-log-out",     command: "hyprctl dispatch 'hl.dsp.exit()'", immediateClose: false },
                 { label: "Reboot",   icon: "system-reboot",      command: "systemctl reboot", immediateClose: false },
                 { label: "Shutdown", icon: "system-shutdown",    command: "systemctl poweroff", immediateClose: false }
             ]

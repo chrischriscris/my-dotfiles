@@ -172,7 +172,7 @@ Item {
                                 }
 
                                 TapHandler {
-                                    onTapped: Hyprland.dispatch("exec " + modelData.exec)
+                                    onTapped: Hyprland.dispatch("hl.dsp.exec_cmd(" + JSON.stringify(modelData.exec) + ")")
                                 }
 
                                 IconImage {
