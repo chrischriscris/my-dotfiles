@@ -1,0 +1,11 @@
+[Unit]
+Description=Install the latest T3 Code Nightly from the AUR
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/lib/t3code-update/install-latest
+Nice=10
+IOSchedulingClass=idle
+TimeoutStartSec=30min

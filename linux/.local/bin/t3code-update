@@ -1,0 +1,74 @@
+#!/bin/bash
+# Update T3 Code Nightly and its background server (t3code.service), restarting
+# the server onto the new build.
+#
+#   t3code-update              update everything, restart the server now if needed
+#   t3code-update --when-idle  same, but hold the server update while an agent or terminal command runs
+#   t3code-update --no-restart update the AUR package only (the `t3` CLI); leave the server alone
+#   t3code-update restart      restart the server without updating
+#
+# The AUR package goes through the root t3code-update.service (allowed without a
+# password by a polkit rule; see ~/.local/share/t3code-update); it provides the
+# `t3` CLI. The server runs its own copy under ~/.t3/runtime, which only
+# `t3 update` replaces, and `t3 update --yes` restarts the server onto it.
+# Run from the t3code-autoupdate timer, this lives outside the server's cgroup,
+# so the restart doesn't kill it.
+set -euo pipefail
+
+service=t3code.service
+state_db=$HOME/.t3/userdata/statev2.sqlite
+
+# Prints what a server restart would interrupt, one item per line:
+# - agent runs in progress according to T3's state DB. Runs older than 12h are
+#   assumed to be leftovers from a crash; a failed query counts as busy.
+# - commands running in a T3 terminal: a shell the server started on a pty
+#   (session leader in the server's cgroup) has handed the terminal to a
+#   foreground job. Shells idle at the prompt don't count.
+busy_reasons() {
+  local runs pid cgroup terms
+  if ! runs=$(sqlite3 -readonly "$state_db" "
+    select count(*) from orchestration_v2_projection_runs
+    where status = 'running'
+      and requested_at > strftime('%Y-%m-%dT%H:%M:%SZ', 'now', '-12 hours')" 2>/dev/null); then
+    echo "agent runs (couldn't read T3's state DB)"
+  elif ((runs > 0)); then
+    echo "$runs agent run(s)"
+  fi
+  pid=$(systemctl --user show -p MainPID --value "$service")
+  ((pid > 0)) || return 0
+  cgroup=$(cat "/proc/$pid/cgroup") || return 0
+  terms=$(ps -e -o pid=,sid=,pgid=,tpgid=,tty=,cgroup= |
+    awk -v cg="$cgroup" '$1 == $2 && $3 != $4 && $5 ~ /^pts\// && $6 == cg' | wc -l)
+  if ((terms > 0)); then echo "$terms terminal command(s)"; fi
+}
+
+mode=${1:-}
+case $mode in
+  "" | --when-idle | --no-restart) ;;
+  restart)
+    systemctl --user restart --no-block "$service"
+    echo "T3 Code is restarting; remote clients reconnect once it is back up (~20s)."
+    exit ;;
+  *) sed -n '5,8s/^# //p' "$0" >&2; exit 2 ;;
+esac
+
+since=$(date +%s)
+status=0
+systemctl start t3code-update.service || status=$?
+journalctl -q -u t3code-update.service --since "@$since" -o cat || true
+((status == 0)) || exit "$status"
+
+[[ $mode == --no-restart ]] && exit 0
+
+if ! systemctl --user -q is-active "$service"; then
+  echo "$service is not running; updating it without a restart to wait for."
+  exec t3 update --yes
+fi
+
+busy=$(busy_reasons | paste -sd, - | sed 's/,/, /g')
+if [[ $mode == --when-idle && -n $busy ]]; then
+  echo "Server update deferred, still running: $busy."
+  exit 0
+fi
+if [[ -n $busy ]]; then echo "Warning: a server restart interrupts $busy."; fi
+exec t3 update --yes

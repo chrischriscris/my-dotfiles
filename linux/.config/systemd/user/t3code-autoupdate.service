@@ -1,0 +1,6 @@
+[Unit]
+Description=Update T3 Code Nightly and its server, restarting the server once no agent or terminal command is running
+
+[Service]
+Type=oneshot
+ExecStart=%h/.local/bin/t3code-update --when-idle

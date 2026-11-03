@@ -1,0 +1,42 @@
+#!/bin/bash
+# Installs the latest t3code-nightly-bin from the AUR. Runs as root via
+# t3code-update.service. The package is fetched and built by the unprivileged
+# t3code-build user in a directory only it can write, so nothing your account
+# (or an agent running as you) can touch ends up in pacman -U.
+set -euo pipefail
+
+pkg=t3code-nightly-bin
+builder=t3code-build
+cache=/var/cache/t3code-update
+src=$cache/$pkg
+
+as_builder() { runuser -u "$builder" -- "$@"; }
+
+install -d -o "$builder" -g "$builder" -m 755 "$cache"
+cd "$cache"
+if [[ -d $src/.git ]]; then
+  as_builder git -C "$src" fetch --quiet origin
+  as_builder git -C "$src" reset --quiet --hard origin/master
+  as_builder git -C "$src" clean -fdxq
+else
+  as_builder git clone --quiet "https://aur.archlinux.org/$pkg.git" "$src"
+fi
+
+latest=$(awk -F' = ' '$1 == "\tepoch" {e = $2 ":"} $1 == "\tpkgver" {v = $2} $1 == "\tpkgrel" {r = $2}
+  END {print e v "-" r}' "$src/.SRCINFO")
+installed=$(pacman -Q "$pkg" 2>/dev/null | cut -d' ' -f2) || true
+if [[ -n $installed ]] && (($(vercmp "$latest" "$installed") <= 0)); then
+  echo "$pkg $installed is up to date."
+  exit 0
+fi
+
+echo "Updating $pkg ${installed:-(not installed)} -> $latest"
+cd "$src"
+# --nodeps: the builder can't install packages; pacman -U pulls in any new deps.
+as_builder makepkg --cleanbuild --clean --nodeps --noconfirm --nocolor --force
+mapfile -t built < <(as_builder makepkg --packagelist)
+
+# Wait out a running pacman/paru rather than failing on the lock.
+for _ in {1..60}; do [[ -e /var/lib/pacman/db.lck ]] || break; sleep 10; done
+pacman -U --noconfirm "${built[@]}"
+as_builder git clean -fdxq # drop the ~200 MB AppImage and package
