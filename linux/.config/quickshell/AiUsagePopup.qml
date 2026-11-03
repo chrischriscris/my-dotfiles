@@ -10,8 +10,20 @@ PopUp {
 
     // Installed outside PATH so it doesn't shadow ~/.local/bin/codexbar.
     property string cliPath: Quickshell.env("HOME") + "/.local/lib/codexbar-cli/codexbar"
-    property string provider: "both"   // claude + codex; any `codexbar --provider` value works
+    property var providerIds: ["claude", "codex", "opencodego"]   // any `codexbar --provider` ids, in tab order
     property int refreshInterval: 5 * 60 * 1000
+
+    // Runs `codexbar <cmd>` for each provider in parallel (OpenCode Go alone takes ~4 s) and prints
+    // one JSON array per line in providerIds order. Through sh so a missing binary still closes stdout.
+    readonly property string fetchScript: [
+        'cli=$1 cmd=$2; shift 2',
+        'dir=$(mktemp -d) || exit 1',
+        'n=0',
+        'for p in "$@"; do n=$((n + 1)); "$cli" "$cmd" --provider "$p" --format json > "$dir/$n" 2>> "$dir/err" & done',
+        'wait',
+        'i=0; while [ $i -lt $n ]; do i=$((i + 1)); cat "$dir/$i"; echo; done',
+        'cat "$dir/err" >&2; rm -rf "$dir"'
+    ].join("\n")
 
     property var providers: []
     property alias selectedTab: savedState.selectedTab
@@ -39,6 +51,12 @@ PopUp {
             color: "#49A3B0",
             dashboard: "https://chatgpt.com/settings/usage?tab=overview",
             status: "https://status.openai.com/"
+        },
+        opencodego: {
+            name: "OpenCode Go",
+            color: "#3B82F6",
+            dashboard: "https://opencode.ai/auth",
+            status: ""
         }
     })
 
@@ -153,7 +171,7 @@ PopUp {
         return expiries.length ? text + " · next expires " + Qt.formatDateTime(new Date(expiries[0]), "MMM d") : text
     }
 
-    // Spend from `codexbar cost`, which scans this PC's local Claude/Codex logs.
+    // Spend from `codexbar cost`, which scans this PC's local agent logs.
     function toCost(entry, weekly) {
         if (!entry || entry.error) return null
         const dayMs = 24 * 3600 * 1000
@@ -257,19 +275,26 @@ PopUp {
         })
     }
 
+    // One JSON array per line (see fetchScript). A provider whose run failed is skipped so the
+    // others still show; null only when no line parsed.
     function parseEntries(text) {
-        try {
-            const entries = JSON.parse(text)
-            return Array.isArray(entries) ? entries : null
-        } catch (e) {
-            return null
+        const entries = []
+        let parsed = 0
+        for (const line of text.split("\n")) {
+            if (!line.trim()) continue
+            try {
+                const value = JSON.parse(line)
+                if (!Array.isArray(value)) continue
+                entries.push(...value)
+                parsed++
+            } catch (e) {}
         }
+        return parsed ? entries : null
     }
 
     Process {
         id: usageProcess
-        // Through sh so a missing binary still closes stdout and reports an error.
-        command: ["sh", "-c", 'exec "$1" usage --provider "$2" --format json', "sh", root.cliPath, root.provider]
+        command: ["sh", "-c", root.fetchScript, "sh", root.cliPath, "usage"].concat(root.providerIds)
         stdout: StdioCollector {
             onStreamFinished: {
                 const entries = root.parseEntries(text)
@@ -291,7 +316,7 @@ PopUp {
 
     Process {
         id: costProcess
-        command: ["sh", "-c", 'exec "$1" cost --provider "$2" --format json', "sh", root.cliPath, root.provider]
+        command: ["sh", "-c", root.fetchScript, "sh", root.cliPath, "cost"].concat(root.providerIds)
         stdout: StdioCollector {
             onStreamFinished: {
                 // Spend is optional: without it the quota sections still show.

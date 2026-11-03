@@ -25,7 +25,7 @@ Restore overwrites only the Hyprland configuration and wallpaper script changed 
 
 ## AI usage widget
 
-The bar shows Claude and Codex quota from the [CodexBar](https://github.com/steipete/CodexBar) CLI (`AiUsage.qml`, `AiUsagePopup.qml`). Like CodexBar's macOS menu bar, it shows one provider: the selected popup tab, or the first provider on Overview. The selection persists in the ignored `ai-usage-state.json`. The number is the quota left in that provider's tightest window. Click it for a popup laid out like CodexBar's macOS menu: per-window bars with pace, local spend, and dashboard/status links. Middle-click refreshes; it also polls every five minutes.
+The bar shows Claude, Codex and OpenCode Go quota from the [CodexBar](https://github.com/steipete/CodexBar) CLI (`AiUsage.qml`, `AiUsagePopup.qml`). Like CodexBar's macOS menu bar, it shows one provider: the selected popup tab, or the first provider on Overview. The selection persists in the ignored `ai-usage-state.json`. The number is the quota left in that provider's tightest window. Click it for a popup laid out like CodexBar's macOS menu: per-window bars with pace, local spend, and dashboard/status links. Middle-click refreshes; it also polls every five minutes.
 
 Install the CLI where the widget expects it, outside `PATH` so it never collides with another `codexbar`. Rerun to upgrade:
 
@@ -43,7 +43,7 @@ tar -xzf CodexBarCLI-*.tar.gz -C ~/.local/lib/codexbar-cli
 )
 ```
 
-The CLI reuses the Claude Code and Codex logins. Spend is estimated from this machine's local logs only. Without the CLI the bar shows a red `AI !`. To track other providers, set `provider` in `AiUsagePopup.qml` to any `codexbar --provider` value.
+The CLI reuses the Claude Code, Codex and OpenCode logins. OpenCode Go needs CLI 0.82 or newer to read the real quota from the OpenCode login; older versions only estimate it from local logs. Spend is estimated from this machine's local logs only. Without the CLI the bar shows a red `AI !`. To track other providers, add any `codexbar --provider` id to `providerIds` in `AiUsagePopup.qml`.
 
 ## Validation
 
