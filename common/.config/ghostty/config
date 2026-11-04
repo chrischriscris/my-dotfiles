@@ -1,6 +1,6 @@
 # Font
 font-size = 16
-font-family = "JetBrainsMono Nerd Font Mono"
+font-family = "Maple Mono NF"
 
 # Window
 window-width = 80
@@ -14,3 +14,6 @@ copy-on-select = true
 
 # Shaders
 custom-shader = shaders/cursor_trail.glsl
+
+# Platform overrides (only present on Linux; ignored elsewhere)
+config-file = ?linux.conf
