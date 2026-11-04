@@ -7,7 +7,7 @@
 
 -- Keep the Sway muscle memory: Alt plus Vim direction keys.
 local mod  = "ALT"
-local term = "kitty"
+local term = "ghostty"
 local menu = "vicinae toggle"
 
 local function key(...)
@@ -279,8 +279,8 @@ hl.window_rule({
 })
 
 hl.window_rule({
-    name    = "kitty-opacity",
-    match   = { class = "^(kitty)$" },
+    name    = "terminal-opacity",
+    match   = { class = "^(kitty|com\\.mitchellh\\.ghostty)$" },
     opacity = "0.96 0.90",
 })
 

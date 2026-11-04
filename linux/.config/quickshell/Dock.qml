@@ -69,7 +69,7 @@ Item {
     }
 
     property var dockItems: [
-        { name: "Terminal", icon: "image://icon/utilities-terminal", exec: "kitty" },
+        { name: "Terminal", icon: "image://icon/utilities-terminal", exec: "ghostty" },
         { name: "Files", icon: "image://icon/system-file-manager", exec: "nemo" },
         { name: "Calculator", icon: "image://icon/gnome-calculator", exec: "gnome-calculator" },
         { name: "Chrome", icon: "image://icon/google-chrome", exec: "google-chrome-stable" },
